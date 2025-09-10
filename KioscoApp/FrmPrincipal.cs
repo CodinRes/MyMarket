@@ -34,7 +34,7 @@ namespace KioscoApp
             Height = 700;
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
+            MaximizeBox = true;
 
             BuildUI();
             Load += FrmPrincipal_Load;
