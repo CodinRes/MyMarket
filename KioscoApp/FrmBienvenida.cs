@@ -7,15 +7,7 @@ namespace KioscoApp
     {
         public FrmBienvenida()
         {
-            BackColor = Color.White;
-            var lbl = new Label
-            {
-                Text = "Bienvenido al Sistema de Gestión del Kiosco",
-                Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            Controls.Add(lbl);
+            InitializeComponent();
         }
     }
 }

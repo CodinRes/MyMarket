@@ -27,16 +27,14 @@ namespace KioscoApp
         {
             _empleado = empleado;
             _rol = rol;
-
-            // Config general del form
-            Text = "Sistema de Gestión - Kiosco";
-            Width = 1100;
-            Height = 700;
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = true;
-
-            BuildUI();
+            InitializeComponent();
+            btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
+            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
+            btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
+            btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
+            btnConfiguracion.Click += (s, e) => MessageBox.Show("Pantalla de configuración (prototipo).");
+            btnSalir.Click += (s, e) => Close();
+            lblUsuario.Text = $"Empleado: {_empleado}  |  Rol: {_rol}";
             Load += FrmPrincipal_Load;
         }
 
@@ -58,22 +56,16 @@ namespace KioscoApp
 
             // Botones del menú (Dock = Top)
             btnEmitirRecibo = CreateMenuButton("Emitir Recibo");
-            btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
 
             btnRecibosEmitidos = CreateMenuButton("Recibos Emitidos");
-            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
 
             btnControlStock = CreateMenuButton("Control de Stock");
-            btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
 
             btnAnalisisDatos = CreateMenuButton("Análisis de Datos");
-            btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
 
             btnConfiguracion = CreateMenuButton("Configuración");
-            btnConfiguracion.Click += (s, e) => MessageBox.Show("Pantalla de configuración (prototipo).");
 
             btnSalir = CreateMenuButton("Salir");
-            btnSalir.Click += (s, e) => Close();
 
             // Agregar en orden de arriba hacia abajo
             panelMenu.Controls.Add(btnSalir);
