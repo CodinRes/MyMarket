@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using MyMarket.Data;
 
 namespace MyMarket
 {
@@ -11,11 +12,16 @@ namespace MyMarket
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Cambi· estos valores para probar distinto usuario/rol
-            string empleado = "Juan PÈrez";
-            string rol = "Vendedor";
-
-            Application.Run(new FrmPrincipal(empleado, rol));
+            try
+            {
+                var connectionFactory = new SqlConnectionFactory();
+                Application.Run(new FrmPrincipal(connectionFactory));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"No fue posible iniciar la aplicaci√≥n. Detalle: {ex.Message}",
+                    "Error cr√≠tico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

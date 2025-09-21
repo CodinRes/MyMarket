@@ -80,6 +80,7 @@
             this.lblUsuario.ForeColor = System.Drawing.Color.White;
             this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold);
             this.lblUsuario.Padding = new System.Windows.Forms.Padding(0, 0, 16, 0);
+            this.lblUsuario.Text = "Iniciar sesión";
             this.panelTop.Controls.Add(this.lblUsuario);
 
             // ===== Panel Contenedor =====
