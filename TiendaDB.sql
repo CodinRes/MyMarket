@@ -9,9 +9,9 @@ CREATE TABLE [dbo].[cliente] (
     [nombre]         VARCHAR (100) NOT NULL,
     [apellido]       VARCHAR (100) NOT NULL,
     [direccion]      VARCHAR (200) NOT NULL,
-    [fecha_registro] DATE          DEFAULT (getdate()) NOT NULL,
+    [fecha_registro] DATE          CONSTRAINT [DF_cliente_fecha_registro] DEFAULT (getdate()) NOT NULL,
     [email]          VARCHAR (100) NOT NULL,
-    [estado]         BIT           CONSTRAINT [DF_cliente_estado] DEFAULT ((1)) NULL,
+    [estado]         BIT           CONSTRAINT [DF_cliente_estado] DEFAULT ((1)) NOT NULL,
     CONSTRAINT [PK_cliente] PRIMARY KEY CLUSTERED ([dni_cliente] ASC),
     CONSTRAINT [UQ_cliente_email] UNIQUE NONCLUSTERED ([email] ASC),
     CONSTRAINT [CK_cliente_estado] CHECK ([estado]=(1) OR [estado]=(0))
@@ -35,11 +35,12 @@ CREATE TABLE [dbo].[empleado] (
     [id_empleado] INT           IDENTITY (1, 1) NOT NULL,
     [cuil_cuit]   VARCHAR (13)  NOT NULL,
     [email]       VARCHAR (100) NOT NULL,
+    [contraseña]  VARCHAR (100) NOT NULL,
     [activo]      BIT           CONSTRAINT [DF_empleado_activo] DEFAULT ((1)) NOT NULL,
     [id_rol]      INT           NOT NULL,
     CONSTRAINT [PK_empleado] PRIMARY KEY CLUSTERED ([id_empleado] ASC),
-    CONSTRAINT [UQ_empleado_email] UNIQUE NONCLUSTERED ([email] ASC),
     CONSTRAINT [UQ_empleado_cuil] UNIQUE NONCLUSTERED ([cuil_cuit] ASC),
+    CONSTRAINT [UQ_empleado_email] UNIQUE NONCLUSTERED ([email] ASC),
     CONSTRAINT [FK_empleado__rol] FOREIGN KEY ([id_rol]) REFERENCES [dbo].[rol] ([id_rol]),
     CONSTRAINT [CK_empleado_activo] CHECK ([activo]=(1) OR [activo]=(0))
 );
@@ -48,18 +49,18 @@ CREATE TABLE [dbo].[factura] (
     [codigo_factura]       BIGINT          IDENTITY (1, 1) NOT NULL,
     [fecha_emision]        DATETIME        CONSTRAINT [DF_factura_fecha_emision] DEFAULT (getdate()) NOT NULL,
     [descuento]            DECIMAL (18, 2) NOT NULL,
+    [estado_venta]         VARCHAR (20)    CONSTRAINT [DEFAULT_FACTURA_estado_venta] DEFAULT ('pendiente') NOT NULL,
+    [porcentaje_impuestos] TINYINT         CONSTRAINT [DEFAULT_FACTURA_procentaje_impuestos] DEFAULT ((21)) NOT NULL,
     [subtotal]             DECIMAL (18, 2) NOT NULL,
     [id_empleado]          INT             NOT NULL,
     [dni_cliente]          VARCHAR (8)     NULL,
     [identificacion_pago]  BIGINT          NOT NULL,
-    [estado_venta]         VARCHAR (20)    CONSTRAINT [DEFAULT_FACTURA_estado_venta] DEFAULT ('pendiente') NOT NULL,
-    [porcentaje_impuestos] TINYINT         CONSTRAINT [DEFAULT_FACTURA_procentaje_impuestos] DEFAULT ((21)) NOT NULL,
     CONSTRAINT [PK_factura] PRIMARY KEY CLUSTERED ([codigo_factura] ASC),
     CONSTRAINT [FK_factura_cliente] FOREIGN KEY ([dni_cliente]) REFERENCES [dbo].[cliente] ([dni_cliente]),
-    CONSTRAINT [FK_factura_empleado] FOREIGN KEY ([id_empleado]) REFERENCES [dbo].[empleado] ([id_empleado]),
     CONSTRAINT [FK_factura_metodo_pago_detalle] FOREIGN KEY ([identificacion_pago]) REFERENCES [dbo].[metodo_pago_detalle] ([identificacion_pago]),
-    CONSTRAINT [CK_factura_estado_venta] CHECK ([estado_venta]='cancelada' OR [estado_venta]='pagada' OR [estado_venta]='pendiente'),
-    CONSTRAINT [CK_factura_porcentaje_impuestos] CHECK ([porcentaje_impuestos]>=(0) AND [porcentaje_impuestos]<=(100))
+    CONSTRAINT [FK_factura_empleado] FOREIGN KEY ([id_empleado]) REFERENCES [dbo].[empleado] ([id_empleado]),
+    CONSTRAINT [CK_factura_porcentaje_impuestos] CHECK ([porcentaje_impuestos]>=(0) AND [porcentaje_impuestos]<=(100)),
+    CONSTRAINT [CK_factura_estado_venta] CHECK ([estado_venta]='cancelada' OR [estado_venta]='pagada' OR [estado_venta]='pendiente')
 );
 
 
@@ -96,8 +97,8 @@ CREATE TABLE [dbo].[producto] (
     [nombre]          VARCHAR (100)   NOT NULL,
     [descripcion]     VARCHAR (200)   NULL,
     [stock]           SMALLINT        NOT NULL,
+    [estado]          BIT             CONSTRAINT [DEFAULT_PRODUCTO_estado] DEFAULT ((1)) NOT NULL,
     [id_categoria]    INT             NOT NULL,
-    [estado]          BIT             CONSTRAINT [DEFAULT_PRODUCTO_estado] DEFAULT ((1)) NULL,
     CONSTRAINT [PK_producto] PRIMARY KEY CLUSTERED ([codigo_producto] ASC),
     CONSTRAINT [UQ_producto_nombre] UNIQUE NONCLUSTERED ([nombre] ASC),
     CONSTRAINT [FK_producto__categoria] FOREIGN KEY ([id_categoria]) REFERENCES [dbo].[categoria] ([id_categoria]),
