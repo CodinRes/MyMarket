@@ -1,4 +1,4 @@
-﻿namespace MyMarket
+namespace MyMarket
 {
     partial class FrmLogin
     {
@@ -28,77 +28,80 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            label1 = new Label();
-            button1 = new Button();
-            button2 = new Button();
-            label2 = new Label();
-            label3 = new Label();
+            txtCuil = new TextBox();
+            txtPassword = new TextBox();
+            lblTitulo = new Label();
+            btnIniciarSesion = new Button();
+            btnCancelar = new Button();
+            lblCuil = new Label();
+            lblPassword = new Label();
             SuspendLayout();
             // 
-            // textBox1
+            // txtCuil
             // 
-            textBox1.Location = new Point(88, 88);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(304, 23);
-            textBox1.TabIndex = 0;
+            txtCuil.Location = new Point(88, 92);
+            txtCuil.MaxLength = 13;
+            txtCuil.Name = "txtCuil";
+            txtCuil.PlaceholderText = "Ingrese el CUIL sin guiones";
+            txtCuil.Size = new Size(304, 23);
+            txtCuil.TabIndex = 0;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(88, 136);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(304, 23);
-            textBox2.TabIndex = 1;
+            txtPassword.Location = new Point(88, 148);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PlaceholderText = "Ingrese la contraseña";
+            txtPassword.Size = new Size(304, 23);
+            txtPassword.TabIndex = 1;
+            txtPassword.UseSystemPasswordChar = true;
             // 
-            // label1
+            // lblTitulo
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(88, 16);
-            label1.Name = "label1";
-            label1.Size = new Size(307, 47);
-            label1.TabIndex = 2;
-            label1.Text = "INICIO DE SESION";
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitulo.Location = new Point(88, 24);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(280, 45);
+            lblTitulo.TabIndex = 2;
+            lblTitulo.Text = "INICIO DE SESIÓN";
             // 
-            // button1
+            // btnIniciarSesion
             // 
-            button1.Location = new Point(160, 176);
-            button1.Name = "button1";
-            button1.Size = new Size(152, 40);
-            button1.TabIndex = 3;
-            button1.Text = "Iniciar Sesión";
-            button1.UseVisualStyleBackColor = true;
+            btnIniciarSesion.Location = new Point(88, 208);
+            btnIniciarSesion.Name = "btnIniciarSesion";
+            btnIniciarSesion.Size = new Size(140, 38);
+            btnIniciarSesion.TabIndex = 3;
+            btnIniciarSesion.Text = "Iniciar sesión";
+            btnIniciarSesion.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnCancelar
             // 
-            button2.Location = new Point(160, 232);
-            button2.Name = "button2";
-            button2.Size = new Size(152, 40);
-            button2.TabIndex = 4;
-            button2.Text = "Cancelar";
-            button2.UseVisualStyleBackColor = true;
+            btnCancelar.Location = new Point(252, 208);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(140, 38);
+            btnCancelar.TabIndex = 4;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // lblCuil
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(211, 64);
-            label2.Name = "label2";
-            label2.Size = new Size(43, 21);
-            label2.TabIndex = 5;
-            label2.Text = "CUIL";
-            label2.Click += label2_Click;
+            lblCuil.AutoSize = true;
+            lblCuil.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCuil.Location = new Point(210, 68);
+            lblCuil.Name = "lblCuil";
+            lblCuil.Size = new Size(45, 20);
+            lblCuil.TabIndex = 5;
+            lblCuil.Text = "CUIL";
             // 
-            // label3
+            // lblPassword
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(189, 114);
-            label3.Name = "label3";
-            label3.Size = new Size(89, 21);
-            label3.TabIndex = 6;
-            label3.Text = "Contraseña";
+            lblPassword.AutoSize = true;
+            lblPassword.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPassword.Location = new Point(189, 124);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(88, 20);
+            lblPassword.TabIndex = 6;
+            lblPassword.Text = "Contraseña";
             // 
             // FrmLogin
             // 
@@ -106,27 +109,31 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DimGray;
             ClientSize = new Size(484, 286);
-            Controls.Add(label2);
-            Controls.Add(label3);
-            Controls.Add(textBox2);
-            Controls.Add(label1);
-            Controls.Add(button2);
-            Controls.Add(textBox1);
-            Controls.Add(button1);
+            Controls.Add(lblPassword);
+            Controls.Add(lblCuil);
+            Controls.Add(btnCancelar);
+            Controls.Add(btnIniciarSesion);
+            Controls.Add(lblTitulo);
+            Controls.Add(txtPassword);
+            Controls.Add(txtCuil);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FrmLogin";
-            Text = "FrmLogin";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Inicio de sesión";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Label label1;
-        private Button button1;
-        private Button button2;
-        private Label label2;
-        private Label label3;
+        private TextBox txtCuil;
+        private TextBox txtPassword;
+        private Label lblTitulo;
+        private Button btnIniciarSesion;
+        private Button btnCancelar;
+        private Label lblCuil;
+        private Label lblPassword;
     }
 }
