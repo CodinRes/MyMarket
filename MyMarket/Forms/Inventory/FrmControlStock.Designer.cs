@@ -67,4 +67,3 @@ partial class FrmControlStock
         private System.Windows.Forms.Button btnReponer, btnDescontar;
         private System.Windows.Forms.FlowLayoutPanel panelBottom;
     }
-}

@@ -350,4 +350,3 @@ partial class FrmGestionUsuarios
         private System.Windows.Forms.Panel panelBotonAgregar;
         private System.Windows.Forms.Button btnAgregar;
     }
-}

@@ -92,4 +92,3 @@ partial class FrmRecibosEmitidos
         private System.Windows.Forms.Button btnVerDetalle;
         private System.Windows.Forms.FlowLayoutPanel panelBottom;
     }
-}

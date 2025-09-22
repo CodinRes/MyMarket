@@ -296,4 +296,3 @@ public partial class FrmPrincipal : Form
             };
         }
     }
-}

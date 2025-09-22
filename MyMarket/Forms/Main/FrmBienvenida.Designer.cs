@@ -44,4 +44,3 @@ partial class FrmBienvenida
 
         #endregion
     }
-}

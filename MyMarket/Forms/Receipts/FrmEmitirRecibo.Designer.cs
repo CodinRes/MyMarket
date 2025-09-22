@@ -36,4 +36,3 @@ partial class FrmEmitirRecibo
 
         #endregion
     }
-}

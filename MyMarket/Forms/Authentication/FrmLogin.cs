@@ -80,4 +80,3 @@ public partial class FrmLogin : Form
             Close();
         }
     }
-}

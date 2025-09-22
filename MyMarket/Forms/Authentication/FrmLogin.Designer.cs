@@ -136,4 +136,3 @@ partial class FrmLogin
         private Label lblCuil;
         private Label lblPassword;
     }
-}
