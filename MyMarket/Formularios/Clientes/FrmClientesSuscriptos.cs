@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace MyMarket.Formularios.Clientes;
 
+/// <summary>
+///     Vista prototipo para administrar clientes suscriptos con datos en memoria.
+/// </summary>
 public partial class FrmClientesSuscriptos : Form
 {
     private readonly BindingList<ClienteViewModel> _clientes = new();
@@ -17,6 +20,7 @@ public partial class FrmClientesSuscriptos : Form
     {
         InitializeComponent();
 
+        // Enlaza la grilla con la lista en memoria.
         dgvClientes.DataSource = bindingSourceClientes;
         bindingSourceClientes.DataSource = _clientes;
         dgvClientes.SelectionChanged += DgvClientes_SelectionChanged;
@@ -32,11 +36,13 @@ public partial class FrmClientesSuscriptos : Form
 
     private void FrmClientesSuscriptos_Load(object? sender, EventArgs e)
     {
+        // Al cargar la pantalla se muestran clientes de ejemplo.
         CargarClientesDemo();
     }
 
     private void FrmClientesSuscriptos_FormClosed(object? sender, FormClosedEventArgs e)
     {
+        // Limpia los recursos de enlace cuando la ventana se cierra.
         dgvClientes.DataSource = null;
         bindingSourceClientes.Dispose();
     }
@@ -97,6 +103,7 @@ public partial class FrmClientesSuscriptos : Form
 
         if (_esEdicion && _clienteSeleccionado is not null)
         {
+            // Actualiza el registro existente y refresca la grilla.
             _clienteSeleccionado.Dni = clienteForm.Dni;
             _clienteSeleccionado.Nombre = clienteForm.Nombre;
             _clienteSeleccionado.Apellido = clienteForm.Apellido;
@@ -107,6 +114,7 @@ public partial class FrmClientesSuscriptos : Form
         }
         else
         {
+            // Simula la persistencia añadiendo el cliente a la lista en memoria.
             _clientes.Add(clienteForm);
         }
 
@@ -165,6 +173,7 @@ public partial class FrmClientesSuscriptos : Form
 
     private static IEnumerable<ClienteViewModel> ObtenerClientesDemo()
     {
+        // Datos ficticios utilizados para ilustrar la funcionalidad.
         yield return new ClienteViewModel
         {
             Dni = "30111222",
@@ -276,6 +285,9 @@ public partial class FrmClientesSuscriptos : Form
         }
     }
 
+    /// <summary>
+    ///     Modelo simple usado para poblar el grid de clientes.
+    /// </summary>
     private sealed class ClienteViewModel
     {
         public string Dni { get; set; } = string.Empty;

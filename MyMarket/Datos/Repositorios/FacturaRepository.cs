@@ -9,15 +9,24 @@ using MyMarket.Datos.Modelos;
 
 namespace MyMarket.Datos.Repositorios;
 
+/// <summary>
+///     Encapsula las operaciones de lectura y escritura de facturas.
+/// </summary>
 public class FacturaRepository
 {
     private readonly SqlConnectionFactory _connectionFactory;
 
+    /// <summary>
+    ///     Recibe la fábrica de conexiones utilizada para abrir conexiones.
+    /// </summary>
     public FacturaRepository(SqlConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }
 
+    /// <summary>
+    ///     Crea una nueva factura y sus detalles dentro de una transacción.
+    /// </summary>
     public long CrearFactura(FacturaCabecera cabecera, IEnumerable<FacturaDetalle> detalles)
     {
         if (cabecera is null)
@@ -30,6 +39,7 @@ public class FacturaRepository
             throw new ArgumentNullException(nameof(detalles));
         }
 
+        // Se materializa la enumeración para evitar recorrerla múltiples veces.
         var detalleList = detalles.ToList();
 
         using var connection = _connectionFactory.CreateOpenConnection();
@@ -43,6 +53,7 @@ public class FacturaRepository
                 VALUES (@fecha_emision, @descuento, @subtotal, @id_empleado, @dni_cliente, @identificacion_pago, @estado_venta, @porcentaje_impuestos);
                 SELECT CAST(SCOPE_IDENTITY() AS BIGINT);", connection, transaction))
             {
+                // Se cargan los parámetros para la cabecera de la factura.
                 insertFacturaCommand.Parameters.Add(new SqlParameter("@fecha_emision", SqlDbType.DateTime) { Value = cabecera.FechaEmision });
 
                 var descuentoParam = new SqlParameter("@descuento", SqlDbType.Decimal)
@@ -73,12 +84,14 @@ public class FacturaRepository
                 });
                 insertFacturaCommand.Parameters.Add(new SqlParameter("@porcentaje_impuestos", SqlDbType.TinyInt) { Value = cabecera.PorcentajeImpuestos });
 
+                // Recupera el identificador generado para asociar los detalles.
                 var result = insertFacturaCommand.ExecuteScalar();
                 codigoFactura = Convert.ToInt64(result, CultureInfo.InvariantCulture);
             }
 
             foreach (var detalle in detalleList)
             {
+                // Inserta cada renglón asociado a la factura creada.
                 using var insertDetalleCommand = new SqlCommand(@"INSERT INTO detalle_factura
                     (codigo_factura, codigo_producto, cantidad_producto)
                     VALUES (@codigo_factura, @codigo_producto, @cantidad_producto);", connection, transaction);
@@ -95,11 +108,15 @@ public class FacturaRepository
         }
         catch
         {
+            // Cualquier error debe revertir los cambios parciales para mantener la integridad.
             transaction.Rollback();
             throw;
         }
     }
 
+    /// <summary>
+    ///     Obtiene una factura junto con los detalles registrados.
+    /// </summary>
     public FacturaDto? ObtenerFacturaPorCodigo(long codigoFactura)
     {
         using var connection = _connectionFactory.CreateOpenConnection();
@@ -142,6 +159,7 @@ public class FacturaRepository
         using var detalleReader = detalleCommand.ExecuteReader();
         while (detalleReader.Read())
         {
+            // Agrega cada detalle recuperado a la colección de la factura.
             factura.Detalles.Add(new FacturaDetalleDto
             {
                 CodigoFactura = detalleReader.GetInt64(0),

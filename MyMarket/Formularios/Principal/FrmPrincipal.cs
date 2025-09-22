@@ -15,6 +15,9 @@ using MyMarket.Servicios.Estado.Modelos;
 
 namespace MyMarket.Formularios.Principal;
 
+/// <summary>
+///     Ventana principal de la aplicación que actúa como contenedor para el resto de módulos.
+/// </summary>
 public partial class FrmPrincipal : Form
 {
         private Panel panelMenu;
@@ -38,6 +41,9 @@ public partial class FrmPrincipal : Form
         private EmpleadoDto? _empleadoAutenticado;
         private readonly ContextMenuStrip _menuSesion;
 
+        /// <summary>
+        ///     Inicializa los servicios y configura los eventos principales de la interfaz.
+        /// </summary>
         public FrmPrincipal(SqlConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
@@ -47,6 +53,7 @@ public partial class FrmPrincipal : Form
 
             InitializeComponent();
 
+            // Configura los botones del menú lateral para que abran los formularios correspondientes.
             btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
             btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
             btnClientesSuscriptos.Click += BtnClientesSuscriptos_Click;
@@ -66,6 +73,9 @@ public partial class FrmPrincipal : Form
             RestaurarEstadoAnterior();
         }
 
+        /// <summary>
+        ///     Carga por defecto la pantalla de bienvenida.
+        /// </summary>
         private void FrmPrincipal_Load(object? sender, EventArgs e)
         {
             AbrirEnPanel(new FrmBienvenida());
@@ -90,6 +100,9 @@ public partial class FrmPrincipal : Form
             AbrirEnPanel(new FrmGestionUsuarios(_empleadoRepository, _empleadoAutenticado));
         }
 
+        /// <summary>
+        ///     Abre el diálogo de login o el menú contextual según corresponda.
+        /// </summary>
         private void LblUsuario_Click(object? sender, EventArgs e)
         {
             if (_empleadoAutenticado is null)
@@ -113,6 +126,9 @@ public partial class FrmPrincipal : Form
             _menuSesion.Show(location, ToolStripDropDownDirection.BelowLeft);
         }
 
+        /// <summary>
+        ///     Despliega el formulario de inicio de sesión y actualiza la sesión en memoria.
+        /// </summary>
         private void MostrarDialogoLogin()
         {
             using var login = new FrmLogin(_empleadoRepository);
@@ -123,6 +139,9 @@ public partial class FrmPrincipal : Form
             }
         }
 
+        /// <summary>
+        ///     Configura la interfaz en función del empleado autenticado.
+        /// </summary>
         private void ActualizarEstadoSesion(EmpleadoDto? empleado)
         {
             _empleadoAutenticado = empleado;
@@ -152,6 +171,9 @@ public partial class FrmPrincipal : Form
             AplicarPermisosPorRol(empleado.RolDescripcion);
         }
 
+        /// <summary>
+        ///     Restablece la aplicación a su estado inicial y limpia la sesión.
+        /// </summary>
         private void CerrarSesion()
         {
             ActualizarEstadoSesion(null);
@@ -159,6 +181,9 @@ public partial class FrmPrincipal : Form
             GuardarEstadoActual();
         }
 
+        /// <summary>
+        ///     Deshabilita todas las opciones del menú lateral.
+        /// </summary>
         private void DeshabilitarOpciones()
         {
             btnEmitirRecibo.Enabled = false;
@@ -169,6 +194,9 @@ public partial class FrmPrincipal : Form
             btnGestionUsuarios.Enabled = false;
         }
 
+        /// <summary>
+        ///     Activa las opciones según los permisos del rol del empleado.
+        /// </summary>
         private void AplicarPermisosPorRol(string rolDescripcion)
         {
             DeshabilitarOpciones();
@@ -204,6 +232,9 @@ public partial class FrmPrincipal : Form
             btnClientesSuscriptos.Enabled = puedeGestionarClientesSuscriptos;
         }
 
+        /// <summary>
+        ///     Controla el acceso al módulo de clientes suscriptos.
+        /// </summary>
         private void BtnClientesSuscriptos_Click(object? sender, EventArgs e)
         {
             if (!TienePermisoClientesSuscriptos(_empleadoAutenticado?.RolDescripcion))
@@ -216,6 +247,9 @@ public partial class FrmPrincipal : Form
             AbrirEnPanel(new FrmClientesSuscriptos());
         }
 
+        /// <summary>
+        ///     Recupera del almacenamiento el estado de la aplicación para continuar donde se dejó.
+        /// </summary>
         private void RestaurarEstadoAnterior()
         {
             var estado = _almacenEstadoAplicacion.Cargar();
@@ -244,11 +278,17 @@ public partial class FrmPrincipal : Form
             }
         }
 
+        /// <summary>
+        ///     Antes de cerrar, guarda la sesión actual y el estado de la ventana.
+        /// </summary>
         private void FrmPrincipal_FormClosing(object? sender, FormClosingEventArgs e)
         {
             GuardarEstadoActual();
         }
 
+        /// <summary>
+        ///     Persiste el estado actual para recuperarlo la próxima vez.
+        /// </summary>
         private void GuardarEstadoActual()
         {
             var estado = new EstadoAplicacion
@@ -274,6 +314,9 @@ public partial class FrmPrincipal : Form
             _almacenEstadoAplicacion.Guardar(estado);
         }
 
+        /// <summary>
+        ///     Determina si un rol tiene acceso a la gestión de clientes suscriptos.
+        /// </summary>
         private static bool TienePermisoClientesSuscriptos(string? rolDescripcion)
         {
             if (string.IsNullOrWhiteSpace(rolDescripcion))
@@ -288,6 +331,9 @@ public partial class FrmPrincipal : Form
                    rolNormalizado.Contains("gestor");
         }
 
+        /// <summary>
+        ///     Valida si el rol indicado corresponde a un gerente.
+        /// </summary>
         private static bool EsGerente(string? rolDescripcion)
         {
             if (string.IsNullOrWhiteSpace(rolDescripcion))
@@ -298,6 +344,9 @@ public partial class FrmPrincipal : Form
             return rolDescripcion.Trim().ToLowerInvariant().Contains("gerente");
         }
 
+        /// <summary>
+        ///     Muestra el formulario indicado dentro del panel contenedor.
+        /// </summary>
         private void AbrirEnPanel(Form form)
         {
             panelContenedor.Controls.Clear();
@@ -310,6 +359,9 @@ public partial class FrmPrincipal : Form
             form.Show();
         }
 
+        /// <summary>
+        ///     Construye un botón consistente para el menú lateral.
+        /// </summary>
         private Button CreateMenuButton(string text)
         {
             return new Button

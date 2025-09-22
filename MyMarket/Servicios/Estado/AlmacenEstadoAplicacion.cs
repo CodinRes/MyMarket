@@ -5,6 +5,9 @@ using MyMarket.Servicios.Estado.Modelos;
 
 namespace MyMarket.Servicios.Estado;
 
+/// <summary>
+///     Administra la persistencia en disco del estado de la aplicación.
+/// </summary>
 public class AlmacenEstadoAplicacion
 {
     private readonly string _filePath;
@@ -14,6 +17,9 @@ public class AlmacenEstadoAplicacion
         PropertyNameCaseInsensitive = true
     };
 
+    /// <summary>
+    ///     Permite indicar una ruta personalizada para guardar el estado o utiliza la carpeta de AppData.
+    /// </summary>
     public AlmacenEstadoAplicacion(string? filePath = null)
     {
         if (!string.IsNullOrWhiteSpace(filePath))
@@ -29,6 +35,9 @@ public class AlmacenEstadoAplicacion
         _filePath = Path.Combine(directory, "appstate.json");
     }
 
+    /// <summary>
+    ///     Recupera el estado almacenado desde el archivo JSON. Si hay un error se devuelve un estado vacío.
+    /// </summary>
     public EstadoAplicacion Cargar()
     {
         try
@@ -52,6 +61,9 @@ public class AlmacenEstadoAplicacion
         }
     }
 
+    /// <summary>
+    ///     Serializa y guarda el estado actual de la aplicación.
+    /// </summary>
     public void Guardar(EstadoAplicacion estado)
     {
         try
@@ -66,6 +78,9 @@ public class AlmacenEstadoAplicacion
         }
     }
 
+    /// <summary>
+    ///     Crea el directorio destino si no existe.
+    /// </summary>
     private static void AsegurarDirectorio(string? directorio)
     {
         if (string.IsNullOrWhiteSpace(directorio))

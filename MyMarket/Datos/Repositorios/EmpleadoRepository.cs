@@ -7,16 +7,25 @@ using MyMarket.Datos.Modelos;
 
 namespace MyMarket.Datos.Repositorios;
 
+/// <summary>
+///     Acceso a datos para operaciones relacionadas con empleados y roles.
+/// </summary>
 public class EmpleadoRepository
 {
     private readonly SqlConnectionFactory _connectionFactory;
     private string? _passwordColumnName;
 
+    /// <summary>
+    ///     Recibe la fábrica de conexiones necesaria para interactuar con la base de datos.
+    /// </summary>
     public EmpleadoRepository(SqlConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
     }
 
+    /// <summary>
+    ///     Verifica las credenciales de un empleado y devuelve su información si es válido.
+    /// </summary>
     public EmpleadoDto? Autenticar(string cuilCuit, string contrasenia)
     {
         if (string.IsNullOrWhiteSpace(cuilCuit))
@@ -37,6 +46,7 @@ public class EmpleadoRepository
                                  INNER JOIN rol r ON e.id_rol = r.id_rol
                                  WHERE e.activo = 1 AND e.cuil_cuit = @cuil AND e.[{passwordColumn}] = @password";
 
+        // Parámetros parametrizados para evitar inyección SQL.
         command.Parameters.Add(new SqlParameter("@cuil", SqlDbType.VarChar, 13) { Value = cuilCuit });
         command.Parameters.Add(new SqlParameter("@password", SqlDbType.VarChar, 100) { Value = contrasenia });
 
@@ -49,6 +59,9 @@ public class EmpleadoRepository
         return MapearEmpleado(reader);
     }
 
+    /// <summary>
+    ///     Obtiene la lista completa de empleados con su rol asociado.
+    /// </summary>
     public IReadOnlyList<EmpleadoDto> ObtenerEmpleados()
     {
         using var connection = _connectionFactory.CreateOpenConnection();
@@ -68,6 +81,9 @@ public class EmpleadoRepository
         return empleados;
     }
 
+    /// <summary>
+    ///     Devuelve los roles disponibles ordenados alfabéticamente.
+    /// </summary>
     public IReadOnlyList<RolDto> ObtenerRoles()
     {
         using var connection = _connectionFactory.CreateOpenConnection();
@@ -88,6 +104,9 @@ public class EmpleadoRepository
         return roles;
     }
 
+    /// <summary>
+    ///     Inserta un nuevo empleado con la contraseña indicada.
+    /// </summary>
     public EmpleadoDto CrearEmpleado(EmpleadoDto empleado, string contrasenia)
     {
         if (empleado is null)
@@ -124,6 +143,7 @@ public class EmpleadoRepository
         command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = empleado.Activo });
         command.Parameters.Add(new SqlParameter("@rol", SqlDbType.Int) { Value = empleado.IdRol });
 
+        // Ejecuta el comando y captura el identificador generado por SQL Server.
         var resultado = command.ExecuteScalar();
         var nuevoId = Convert.ToInt32(resultado);
         empleado.IdEmpleado = nuevoId;
@@ -131,6 +151,9 @@ public class EmpleadoRepository
         return empleado;
     }
 
+    /// <summary>
+    ///     Actualiza los datos de un empleado, incluyendo la contraseña si se provee un valor.
+    /// </summary>
     public void ActualizarEmpleado(EmpleadoDto empleado, string? contrasenia)
     {
         if (empleado is null)
@@ -183,11 +206,17 @@ public class EmpleadoRepository
         command.ExecuteNonQuery();
     }
 
+    /// <summary>
+    ///     Desactiva al empleado indicado.
+    /// </summary>
     public void DesactivarEmpleado(int idEmpleado)
     {
         CambiarEstadoEmpleado(idEmpleado, false);
     }
 
+    /// <summary>
+    ///     Cambia el estado de actividad de un empleado.
+    /// </summary>
     public void CambiarEstadoEmpleado(int idEmpleado, bool activo)
     {
         using var connection = _connectionFactory.CreateOpenConnection();
@@ -199,6 +228,9 @@ public class EmpleadoRepository
         command.ExecuteNonQuery();
     }
 
+    /// <summary>
+    ///     Detecta y almacena el nombre real de la columna de contraseña ya que puede contener tilde.
+    /// </summary>
     private string ResolverColumnaContrasena(SqlConnection connection)
     {
         if (!string.IsNullOrEmpty(_passwordColumnName))
@@ -206,6 +238,7 @@ public class EmpleadoRepository
             return _passwordColumnName!;
         }
 
+        // Consulta los metadatos de la tabla para averiguar cómo está escrita la columna.
         using var command = connection.CreateCommand();
         command.CommandText = @"SELECT COLUMN_NAME
                                  FROM INFORMATION_SCHEMA.COLUMNS
@@ -221,6 +254,9 @@ public class EmpleadoRepository
         throw new InvalidOperationException("La tabla empleado no tiene una columna de contraseña configurada.");
     }
 
+    /// <summary>
+    ///     Construye la entidad de dominio a partir de un <see cref="SqlDataReader"/>.
+    /// </summary>
     private EmpleadoDto MapearEmpleado(SqlDataReader reader)
     {
         return new EmpleadoDto
@@ -236,6 +272,9 @@ public class EmpleadoRepository
         };
     }
 
+    /// <summary>
+    ///     Intenta obtener una cadena de una columna que podría no existir o contener nulos.
+    /// </summary>
     private static string? TryGetString(SqlDataReader reader, string columnName)
     {
         try

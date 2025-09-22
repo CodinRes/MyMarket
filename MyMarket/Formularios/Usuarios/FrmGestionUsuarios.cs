@@ -9,6 +9,9 @@ using MyMarket.Datos.Repositorios;
 
 namespace MyMarket.Formularios.Usuarios;
 
+/// <summary>
+///     Interfaz de administración de empleados con operaciones de alta, edición y cambio de estado.
+/// </summary>
 public partial class FrmGestionUsuarios : Form
 {
     private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
@@ -17,6 +20,9 @@ public partial class FrmGestionUsuarios : Form
     private readonly EmpleadoDto _empleadoActual;
     private readonly bool _puedeAdministrarUsuarios;
 
+    /// <summary>
+    ///     Configura dependencias, inicializa la grilla y determina los permisos disponibles.
+    /// </summary>
     public FrmGestionUsuarios(EmpleadoRepository empleadoRepository, EmpleadoDto empleadoActual)
     {
         _empleadoRepository = empleadoRepository ?? throw new ArgumentNullException(nameof(empleadoRepository));
@@ -50,6 +56,9 @@ public partial class FrmGestionUsuarios : Form
         CargarEmpleados();
     }
 
+    /// <summary>
+    ///     Realiza validaciones básicas y crea un nuevo usuario en la base de datos.
+    /// </summary>
     private void BtnAgregar_Click(object? sender, EventArgs e)
     {
         var cuil = txtCuil.Text.Trim();
@@ -129,6 +138,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Cambia el estado activo/inactivo del empleado seleccionado.
+    /// </summary>
     private void BtnEliminar_Click(object? sender, EventArgs e)
     {
         if (!_puedeAdministrarUsuarios)
@@ -180,6 +192,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Obtiene la lista de empleados desde la base y la enlaza a la grilla.
+    /// </summary>
     private void CargarEmpleados()
     {
         try
@@ -199,6 +214,9 @@ public partial class FrmGestionUsuarios : Form
     {
         ActualizarEstadoBoton();
     }
+    /// <summary>
+    ///     Carga los roles disponibles para asignar a un empleado.
+    /// </summary>
     private void CargarRoles()
     {
         try
@@ -216,6 +234,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Restablece los campos del formulario de alta.
+    /// </summary>
     private void LimpiarFormulario()
     {
         txtCuil.Clear();
@@ -229,6 +250,9 @@ public partial class FrmGestionUsuarios : Form
         txtCuil.Focus();
     }
 
+    /// <summary>
+    ///     Actualiza el estado de los botones de acciones según el usuario seleccionado y los permisos.
+    /// </summary>
     private void ActualizarEstadoBoton()
     {
         if (!_puedeAdministrarUsuarios)
@@ -252,6 +276,9 @@ public partial class FrmGestionUsuarios : Form
         btnEditar.Enabled = puedeGestionar;
     }
 
+    /// <summary>
+    ///     Muestra un diálogo modal para editar el usuario seleccionado.
+    /// </summary>
     private void BtnEditar_Click(object? sender, EventArgs e)
     {
         if (dgvUsuarios.CurrentRow?.DataBoundItem is not EmpleadoDto empleado)
@@ -361,6 +388,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Comprueba si el usuario actual puede modificar al empleado indicado.
+    /// </summary>
     private bool PuedeGestionarEmpleado(EmpleadoDto empleado)
     {
         if (!_puedeAdministrarUsuarios)
@@ -384,6 +414,9 @@ public partial class FrmGestionUsuarios : Form
         return jerarquiaActual > jerarquiaObjetivo;
     }
 
+    /// <summary>
+    ///     Asigna prioridades numéricas a los roles conocidos para compararlos.
+    /// </summary>
     private static int ObtenerPrioridadRol(string? rolDescripcion)
     {
         if (string.IsNullOrWhiteSpace(rolDescripcion))
@@ -416,6 +449,9 @@ public partial class FrmGestionUsuarios : Form
         return 1;
     }
 
+    /// <summary>
+    ///     Determina si el empleado tiene rol de gerente.
+    /// </summary>
     private static bool EsGerente(EmpleadoDto empleado)
     {
         if (empleado is null)
@@ -458,6 +494,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Busca en la grilla la fila correspondiente al identificador indicado.
+    /// </summary>
     private void SeleccionarFilaPorId(int idEmpleado)
     {
         foreach (DataGridViewRow row in dgvUsuarios.Rows)
@@ -482,6 +521,9 @@ public partial class FrmGestionUsuarios : Form
         }
     }
 
+    /// <summary>
+    ///     Cuadro de diálogo utilizado para editar la información de un usuario.
+    /// </summary>
     private sealed class EditarUsuarioDialog : Form
     {
         private readonly TextBox _txtEmail;

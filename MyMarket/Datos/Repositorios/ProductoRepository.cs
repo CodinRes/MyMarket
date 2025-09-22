@@ -5,15 +5,24 @@ using MyMarket.Datos.Modelos;
 
 namespace MyMarket.Datos.Repositorios;
 
+/// <summary>
+///     Repositorio encargado de las operaciones básicas sobre productos.
+/// </summary>
 public class ProductoRepository
 {
     private readonly SqlConnectionFactory _connectionFactory;
 
+    /// <summary>
+    ///     Inicializa el repositorio con la fábrica de conexiones.
+    /// </summary>
     public ProductoRepository(SqlConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }
 
+    /// <summary>
+    ///     Obtiene todos los productos activos en la base de datos.
+    /// </summary>
     public IReadOnlyList<ProductoDto> GetProductosActivos()
     {
         var productos = new List<ProductoDto>();
@@ -43,6 +52,9 @@ public class ProductoRepository
         return productos;
     }
 
+    /// <summary>
+    ///     Actualiza el stock disponible para el producto especificado.
+    /// </summary>
     public bool ActualizarStock(long codigoProducto, short cantidad)
     {
         using var connection = _connectionFactory.CreateOpenConnection();
