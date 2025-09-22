@@ -1,7 +1,7 @@
-namespace MyMarket
+namespace MyMarket.Forms.Users;
+
+partial class FrmGestionUsuarios
 {
-    partial class FrmGestionUsuarios
-    {
         /// <summary>
         ///  Required designer variable.
         /// </summary>

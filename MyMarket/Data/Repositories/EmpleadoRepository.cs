@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using MyMarket.Data.Infrastructure;
 using MyMarket.Data.Models;
 
-namespace MyMarket.Data;
+namespace MyMarket.Data.Repositories;
 
 public class EmpleadoRepository
 {

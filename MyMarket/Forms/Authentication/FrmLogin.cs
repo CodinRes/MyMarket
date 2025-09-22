@@ -1,13 +1,13 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
-using MyMarket.Data;
 using MyMarket.Data.Models;
+using MyMarket.Data.Repositories;
 
-namespace MyMarket
+namespace MyMarket.Forms.Authentication;
+
+public partial class FrmLogin : Form
 {
-    public partial class FrmLogin : Form
-    {
         private readonly EmpleadoRepository _empleadoRepository;
 
         public EmpleadoDto? EmpleadoAutenticado { get; private set; }

@@ -1,10 +1,4 @@
-namespace MyMarket.Services.Models;
-
-public class AppState
-{
-    public EmpleadoState? SesionActiva { get; set; }
-    public string? EstadoVentana { get; set; }
-}
+namespace MyMarket.Services.State.Models;
 
 public class EmpleadoState
 {

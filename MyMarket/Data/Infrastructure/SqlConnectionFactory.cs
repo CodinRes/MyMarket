@@ -1,7 +1,7 @@
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 
-namespace MyMarket.Data;
+namespace MyMarket.Data.Infrastructure;
 
 public class SqlConnectionFactory
 {

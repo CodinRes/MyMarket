@@ -1,7 +1,7 @@
-﻿namespace MyMarket
+namespace MyMarket.Forms.Main;
+
+partial class FrmPrincipal
 {
-    partial class FrmPrincipal
-    {
         /// <summary>
         ///  Required designer variable.
         /// </summary>

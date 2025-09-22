@@ -1,7 +1,7 @@
-﻿namespace MyMarket
+namespace MyMarket.Forms.Analytics;
+
+partial class FrmAnalisisDatos
 {
-    partial class FrmAnalisisDatos
-    {
         /// <summary>
         /// Required designer variable.
         /// </summary>

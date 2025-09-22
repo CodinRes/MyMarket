@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using MyMarket.Services.Models;
+using MyMarket.Services.State.Models;
 
-namespace MyMarket.Services;
+namespace MyMarket.Services.State;
 
 public class AppStateStorage
 {
