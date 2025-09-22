@@ -1,7 +1,7 @@
-﻿namespace MyMarket
+namespace MyMarket.Forms.Inventory;
+
+partial class FrmControlStock
 {
-    partial class FrmControlStock
-    {
         /// <summary>
         /// Required designer variable.
         /// </summary>

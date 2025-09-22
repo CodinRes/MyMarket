@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using MyMarket.Data;
 using MyMarket.Data.Models;
+using MyMarket.Data.Repositories;
 
-namespace MyMarket;
+namespace MyMarket.Forms.Users;
 
 public partial class FrmGestionUsuarios : Form
 {

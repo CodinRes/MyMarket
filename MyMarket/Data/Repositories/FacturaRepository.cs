@@ -4,27 +4,10 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using Microsoft.Data.SqlClient;
+using MyMarket.Data.Infrastructure;
 using MyMarket.Data.Models;
 
-namespace MyMarket.Data;
-
-public class FacturaCabecera
-{
-    public DateTime FechaEmision { get; set; } = DateTime.Now;
-    public decimal Descuento { get; set; }
-    public decimal Subtotal { get; set; }
-    public int IdEmpleado { get; set; }
-    public string? DniCliente { get; set; }
-    public long IdentificacionPago { get; set; }
-    public string EstadoVenta { get; set; } = "pendiente";
-    public byte PorcentajeImpuestos { get; set; } = 21;
-}
-
-public class FacturaDetalle
-{
-    public long CodigoProducto { get; set; }
-    public short CantidadProducto { get; set; }
-}
+namespace MyMarket.Data.Repositories;
 
 public class FacturaRepository
 {

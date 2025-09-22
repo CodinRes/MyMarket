@@ -1,15 +1,21 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using MyMarket.Data;
+using MyMarket.Data.Infrastructure;
 using MyMarket.Data.Models;
-using MyMarket.Services;
-using MyMarket.Services.Models;
+using MyMarket.Data.Repositories;
+using MyMarket.Forms.Analytics;
+using MyMarket.Forms.Authentication;
+using MyMarket.Forms.Inventory;
+using MyMarket.Forms.Receipts;
+using MyMarket.Forms.Users;
+using MyMarket.Services.State;
+using MyMarket.Services.State.Models;
 
-namespace MyMarket
+namespace MyMarket.Forms.Main;
+
+public partial class FrmPrincipal : Form
 {
-    public partial class FrmPrincipal : Form
-    {
         private Panel panelMenu;
         private Panel panelTop;
         private Panel panelContenedor;

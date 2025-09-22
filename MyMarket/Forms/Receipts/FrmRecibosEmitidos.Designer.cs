@@ -1,7 +1,7 @@
-﻿namespace MyMarket
+namespace MyMarket.Forms.Receipts;
+
+partial class FrmRecibosEmitidos
 {
-    partial class FrmRecibosEmitidos
-    {
         /// <summary>
         /// Required designer variable.
         /// </summary>

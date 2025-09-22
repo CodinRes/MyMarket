@@ -1,7 +1,7 @@
-namespace MyMarket
+namespace MyMarket.Forms.Authentication;
+
+partial class FrmLogin
 {
-    partial class FrmLogin
-    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
