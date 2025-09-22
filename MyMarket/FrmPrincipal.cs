@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using MyMarket.Data;
 using MyMarket.Data.Models;
+using MyMarket.Services;
+using MyMarket.Services.Models;
 
 namespace MyMarket
 {
@@ -19,11 +21,12 @@ namespace MyMarket
         private Button btnRecibosEmitidos;
         private Button btnControlStock;
         private Button btnAnalisisDatos;
-        private Button btnConfiguracion;
+        private Button btnGestionUsuarios;
         private Button btnSalir;
 
         private readonly SqlConnectionFactory _connectionFactory;
         private readonly EmpleadoRepository _empleadoRepository;
+        private readonly AppStateStorage _appStateStorage;
         private EmpleadoDto? _empleadoAutenticado;
         private readonly ContextMenuStrip _menuSesion;
 
@@ -31,6 +34,7 @@ namespace MyMarket
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _empleadoRepository = new EmpleadoRepository(_connectionFactory);
+            _appStateStorage = new AppStateStorage();
             _menuSesion = new ContextMenuStrip();
 
             InitializeComponent();
@@ -39,8 +43,7 @@ namespace MyMarket
             btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
             btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
             btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
-            btnConfiguracion.Click += (s, e) => MessageBox.Show("Pantalla de configuración (prototipo).", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            btnGestionUsuarios.Click += BtnGestionUsuarios_Click;
             btnSalir.Click += (s, e) => Close();
 
             lblUsuario.Cursor = Cursors.Hand;
@@ -48,13 +51,34 @@ namespace MyMarket
             lblUsuario.ContextMenuStrip = _menuSesion;
 
             Load += FrmPrincipal_Load;
+            FormClosing += FrmPrincipal_FormClosing;
 
             ActualizarEstadoSesion(null);
+            RestaurarEstadoAnterior();
         }
 
         private void FrmPrincipal_Load(object? sender, EventArgs e)
         {
             AbrirEnPanel(new FrmBienvenida());
+        }
+
+        private void BtnGestionUsuarios_Click(object? sender, EventArgs e)
+        {
+            if (_empleadoAutenticado is null)
+            {
+                MessageBox.Show("Debe iniciar sesión para gestionar usuarios.", "Sesión requerida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!EsGerente(_empleadoAutenticado.RolDescripcion))
+            {
+                MessageBox.Show("Solo los gerentes pueden acceder a la gestión de usuarios.", "Acceso denegado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AbrirEnPanel(new FrmGestionUsuarios(_empleadoRepository, _empleadoAutenticado));
         }
 
         private void LblUsuario_Click(object? sender, EventArgs e)
@@ -86,6 +110,7 @@ namespace MyMarket
             if (login.ShowDialog(this) == DialogResult.OK && login.EmpleadoAutenticado is not null)
             {
                 ActualizarEstadoSesion(login.EmpleadoAutenticado);
+                GuardarEstadoActual();
             }
         }
 
@@ -97,12 +122,14 @@ namespace MyMarket
             if (empleado is null)
             {
                 lblUsuario.Text = "Iniciar sesión";
+                btnGestionUsuarios.Visible = false;
                 DeshabilitarOpciones();
                 _menuSesion.Items.Add(new ToolStripMenuItem("Iniciar sesión", null, (_, _) => MostrarDialogoLogin()));
                 return;
             }
 
             lblUsuario.Text = $"Empleado: {empleado.NombreParaMostrar}";
+            btnGestionUsuarios.Visible = true;
 
             var rolItem = new ToolStripMenuItem($"Rol: {empleado.RolDescripcion}")
             {
@@ -120,6 +147,7 @@ namespace MyMarket
         {
             ActualizarEstadoSesion(null);
             AbrirEnPanel(new FrmBienvenida());
+            GuardarEstadoActual();
         }
 
         private void DeshabilitarOpciones()
@@ -128,7 +156,7 @@ namespace MyMarket
             btnRecibosEmitidos.Enabled = false;
             btnControlStock.Enabled = false;
             btnAnalisisDatos.Enabled = false;
-            btnConfiguracion.Enabled = false;
+            btnGestionUsuarios.Enabled = false;
         }
 
         private void AplicarPermisosPorRol(string rolDescripcion)
@@ -148,7 +176,7 @@ namespace MyMarket
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
                 btnAnalisisDatos.Enabled = true;
-                btnConfiguracion.Enabled = true;
+                btnGestionUsuarios.Enabled = true;
                 return;
             }
 
@@ -167,10 +195,81 @@ namespace MyMarket
             }
         }
 
+        private void RestaurarEstadoAnterior()
+        {
+            var estado = _appStateStorage.Load();
+
+            if (estado?.SesionActiva is not null)
+            {
+                var empleado = new EmpleadoDto
+                {
+                    IdEmpleado = estado.SesionActiva.IdEmpleado,
+                    CuilCuit = estado.SesionActiva.CuilCuit,
+                    Email = estado.SesionActiva.Email,
+                    Activo = estado.SesionActiva.Activo,
+                    IdRol = estado.SesionActiva.IdRol,
+                    RolDescripcion = estado.SesionActiva.RolDescripcion,
+                    Nombre = estado.SesionActiva.Nombre,
+                    Apellido = estado.SesionActiva.Apellido
+                };
+
+                ActualizarEstadoSesion(empleado);
+            }
+
+            if (!string.IsNullOrWhiteSpace(estado?.EstadoVentana) &&
+                Enum.TryParse<FormWindowState>(estado.EstadoVentana, true, out var estadoVentana))
+            {
+                WindowState = estadoVentana;
+            }
+        }
+
+        private void FrmPrincipal_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            GuardarEstadoActual();
+        }
+
+        private void GuardarEstadoActual()
+        {
+            var estado = new AppState
+            {
+                EstadoVentana = WindowState.ToString()
+            };
+
+            if (_empleadoAutenticado is not null)
+            {
+                estado.SesionActiva = new EmpleadoState
+                {
+                    IdEmpleado = _empleadoAutenticado.IdEmpleado,
+                    CuilCuit = _empleadoAutenticado.CuilCuit,
+                    Email = _empleadoAutenticado.Email,
+                    Activo = _empleadoAutenticado.Activo,
+                    IdRol = _empleadoAutenticado.IdRol,
+                    RolDescripcion = _empleadoAutenticado.RolDescripcion,
+                    Nombre = _empleadoAutenticado.Nombre,
+                    Apellido = _empleadoAutenticado.Apellido
+                };
+            }
+
+            _appStateStorage.Save(estado);
+        }
+
+        private static bool EsGerente(string? rolDescripcion)
+        {
+            if (string.IsNullOrWhiteSpace(rolDescripcion))
+            {
+                return false;
+            }
+
+            return rolDescripcion.Trim().ToLowerInvariant().Contains("gerente");
+        }
+
         private void AbrirEnPanel(Form form)
         {
             panelContenedor.Controls.Clear();
             form.TopLevel = false;
+            form.FormBorderStyle = FormBorderStyle.None;
+            form.MaximizeBox = false;
+            form.MinimizeBox = false;
             form.Dock = DockStyle.Fill;
             panelContenedor.Controls.Add(form);
             form.Show();

@@ -35,7 +35,7 @@
             this.Text = "FrmBienvenida";
             lbl = new System.Windows.Forms.Label();
             this.BackColor = System.Drawing.Color.White;
-            lbl.Text = "Bienvenido al Sistema de Gestión del Kiosco";
+            lbl.Text = "Bienvenido al Sistema de Gestión de MyMarket";
             lbl.Dock = System.Windows.Forms.DockStyle.Fill;
             lbl.Font = new System.Drawing.Font("Segoe UI", 18, System.Drawing.FontStyle.Bold);
             lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
