@@ -43,6 +43,7 @@ partial class FrmPrincipal
             // Botones del menú (Dock = Top)
             this.btnEmitirRecibo = CreateMenuButton("Venta");
             this.btnRecibosEmitidos = CreateMenuButton("Recibos Emitidos");
+            this.btnClientesSuscriptos = CreateMenuButton("Clientes suscriptos");
             this.btnControlStock = CreateMenuButton("Control de Stock");
             this.btnAnalisisDatos = CreateMenuButton("Análisis de Datos");
             this.btnGestionUsuarios = CreateMenuButton("Gestión de Usuarios");
@@ -52,6 +53,7 @@ partial class FrmPrincipal
             this.panelMenu.Controls.Add(this.btnGestionUsuarios);
             this.panelMenu.Controls.Add(this.btnAnalisisDatos);
             this.panelMenu.Controls.Add(this.btnControlStock);
+            this.panelMenu.Controls.Add(this.btnClientesSuscriptos);
             this.panelMenu.Controls.Add(this.btnRecibosEmitidos);
             this.panelMenu.Controls.Add(this.btnEmitirRecibo);
 

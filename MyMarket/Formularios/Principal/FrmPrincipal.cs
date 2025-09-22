@@ -7,6 +7,7 @@ using MyMarket.Datos.Repositorios;
 using MyMarket.Formularios.Analitica;
 using MyMarket.Formularios.Autenticacion;
 using MyMarket.Formularios.Inventario;
+using MyMarket.Formularios.Clientes;
 using MyMarket.Formularios.Recibos;
 using MyMarket.Formularios.Usuarios;
 using MyMarket.Servicios.Estado;
@@ -26,6 +27,7 @@ public partial class FrmPrincipal : Form
         private Button btnEmitirRecibo;
         private Button btnRecibosEmitidos;
         private Button btnControlStock;
+        private Button btnClientesSuscriptos;
         private Button btnAnalisisDatos;
         private Button btnGestionUsuarios;
         private Button btnSalir;
@@ -47,6 +49,7 @@ public partial class FrmPrincipal : Form
 
             btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
             btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
+            btnClientesSuscriptos.Click += (s, e) => AbrirEnPanel(new FrmClientesSuscriptos());
             btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
             btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
             btnGestionUsuarios.Click += BtnGestionUsuarios_Click;
@@ -161,6 +164,7 @@ public partial class FrmPrincipal : Form
             btnEmitirRecibo.Enabled = false;
             btnRecibosEmitidos.Enabled = false;
             btnControlStock.Enabled = false;
+            btnClientesSuscriptos.Enabled = false;
             btnAnalisisDatos.Enabled = false;
             btnGestionUsuarios.Enabled = false;
         }
@@ -181,6 +185,7 @@ public partial class FrmPrincipal : Form
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
+                btnClientesSuscriptos.Enabled = true;
                 btnAnalisisDatos.Enabled = true;
                 btnGestionUsuarios.Enabled = true;
                 return;
@@ -191,6 +196,7 @@ public partial class FrmPrincipal : Form
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
+                btnClientesSuscriptos.Enabled = true;
                 return;
             }
 
@@ -198,6 +204,7 @@ public partial class FrmPrincipal : Form
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
+                btnClientesSuscriptos.Enabled = true;
             }
         }
 
