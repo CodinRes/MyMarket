@@ -45,11 +45,11 @@
             this.btnRecibosEmitidos = CreateMenuButton("Recibos Emitidos");
             this.btnControlStock = CreateMenuButton("Control de Stock");
             this.btnAnalisisDatos = CreateMenuButton("Análisis de Datos");
-            this.btnConfiguracion = CreateMenuButton("Configuración");
+            this.btnGestionUsuarios = CreateMenuButton("Gestión de Usuarios");
             this.btnSalir = CreateMenuButton("Salir");
 
             this.panelMenu.Controls.Add(this.btnSalir);
-            this.panelMenu.Controls.Add(this.btnConfiguracion);
+            this.panelMenu.Controls.Add(this.btnGestionUsuarios);
             this.panelMenu.Controls.Add(this.btnAnalisisDatos);
             this.panelMenu.Controls.Add(this.btnControlStock);
             this.panelMenu.Controls.Add(this.btnRecibosEmitidos);
