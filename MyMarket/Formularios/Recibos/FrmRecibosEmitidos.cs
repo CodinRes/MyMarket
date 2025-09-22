@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace MyMarket.Formularios.Recibos;
 
+/// <summary>
+///     Pantalla prototipo que lista recibos emitidos recientemente.
+/// </summary>
 public partial class FrmRecibosEmitidos : Form
 {
     public FrmRecibosEmitidos()
@@ -25,6 +28,9 @@ public partial class FrmRecibosEmitidos : Form
         dgv.Rows.Add("0001-00001236", DateTime.Today.ToShortDateString(), "Carlos Pérez", 4200);
     }
 
+    /// <summary>
+    ///     Simula la visualización del detalle de un recibo.
+    /// </summary>
     private void BtnVerDetalle_Click(object? sender, EventArgs e)
     {
         if (dgv.CurrentRow is null)

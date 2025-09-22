@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace MyMarket.Formularios.Recibos;
 
+/// <summary>
+///     Formulario prototipo para emitir recibos con datos simulados.
+/// </summary>
 public partial class FrmEmitirRecibo : Form
 {
     public FrmEmitirRecibo()
@@ -14,6 +17,9 @@ public partial class FrmEmitirRecibo : Form
         AsociarEventosPlaceholder();
     }
 
+    /// <summary>
+    ///     Carga opciones básicas de clientes y métodos de pago.
+    /// </summary>
     private void ConfigurarCombos()
     {
         cmbCliente.Items.Clear();
@@ -37,6 +43,9 @@ public partial class FrmEmitirRecibo : Form
         cmbMetodoPago.SelectedIndex = 0;
     }
 
+    /// <summary>
+    ///     Prepara las columnas de la grilla que representa el detalle del recibo.
+    /// </summary>
     private void ConfigurarDataGridView()
     {
         dgvDetalle.Columns.Clear();
@@ -50,6 +59,9 @@ public partial class FrmEmitirRecibo : Form
         dgvDetalle.Columns["colSubtotal"].FillWeight = 25;
     }
 
+    /// <summary>
+    ///     Resetea los totales mostrados al usuario.
+    /// </summary>
     private void InicializarTotales()
     {
         txtSubtotal.Text = "$ 0,00";
@@ -57,6 +69,9 @@ public partial class FrmEmitirRecibo : Form
         txtTotal.Text = "$ 0,00";
     }
 
+    /// <summary>
+    ///     Asocia eventos temporales que explican que la lógica está pendiente.
+    /// </summary>
     private void AsociarEventosPlaceholder()
     {
         btnNuevoItem.Click += (_, _) => MostrarMensajePlaceholder("Nuevo ítem");

@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace MyMarket.Formularios.Inventario;
 
+/// <summary>
+///     Pantalla de ejemplo para modificar el stock de productos de manera manual.
+/// </summary>
 public partial class FrmControlStock : Form
 {
     public FrmControlStock()
@@ -11,12 +14,15 @@ public partial class FrmControlStock : Form
         InitializeComponent();
         btnReponer.Click += (s, e) => ModificarStock(+1);
         btnDescontar.Click += (s, e) => ModificarStock(-1);
-        // Datos fake
+        // Datos ficticios utilizados para la demostración.
         dgv.Rows.Add("P001", "Gaseosa 500ml", 12);
         dgv.Rows.Add("P002", "Chocolate", 6);
         dgv.Rows.Add("P003", "Papas fritas", 3);
     }
 
+    /// <summary>
+    ///     Ajusta el stock del producto seleccionado sumando el delta indicado.
+    /// </summary>
     private void ModificarStock(int delta)
     {
         if (dgv.CurrentRow == null)

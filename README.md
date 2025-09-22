@@ -23,10 +23,10 @@ La solución sigue una estructura por capas para separar responsabilidades:
 3. **Autenticación**: `FrmLogin` consume `EmpleadoRepository` para validar credenciales, mostrar mensajes de error específicos y devolver el empleado autenticado.
 4. **Gestión de usuarios**: `FrmGestionUsuarios` muestra la grilla de empleados, habilita acciones según el rol y permite crear, activar o desactivar usuarios.
 5. **Ventas y reportes**:
-   - `FrmEmitirRecibo` construye la interfaz dinámicamente, calcula subtotales y total del recibo en memoria.
- - `FrmRecibosEmitidos` muestra recibos simulados y valida la selección antes de mostrar el detalle.
-  - `FrmControlStock` simula el ajuste de inventario desde la interfaz.
-  - `FrmAnalisisDatos` sirve como base para visualizar gráficos con `System.Windows.Forms.DataVisualization`.
+   - `FrmEmitirRecibo` prepara controles y totales de ejemplo, dejando mensajes aclaratorios para la lógica pendiente.
+   - `FrmRecibosEmitidos` muestra recibos simulados y valida la selección antes de mostrar el detalle.
+   - `FrmControlStock` simula el ajuste de inventario desde la interfaz.
+   - `FrmAnalisisDatos` sirve como base para visualizar gráficos con `System.Windows.Forms.DataVisualization`.
 
 ## Documentación detallada del código
 
@@ -44,7 +44,7 @@ La solución sigue una estructura por capas para separar responsabilidades:
 - **Principal**: `FrmPrincipal` organiza el menú lateral, orquesta la carga de formularios hijos en el panel central y administra la sesión activa. `FrmBienvenida` muestra un mensaje inicial cuando no hay módulos abiertos.
 - **Autenticacion**: `FrmLogin` valida credenciales, muestra mensajes de ayuda y expone la propiedad `EmpleadoAutenticado` para devolver el resultado.
 - **Usuarios**: `FrmGestionUsuarios` muestra la grilla de empleados, habilita acciones según el rol y coordina la creación o desactivación con `EmpleadoRepository`.
-- **Recibos**: `FrmEmitirRecibo` construye dinámicamente la lista de ítems de venta y calcula totales, mientras que `FrmRecibosEmitidos` despliega un historial simulado.
+- **Recibos**: `FrmEmitirRecibo` inicializa la interfaz y comunica qué acciones están pendientes de implementación, mientras que `FrmRecibosEmitidos` despliega un historial simulado.
 - **Inventario**: `FrmControlStock` permite ajustar el stock usando botones de incremento/decremento sobre una grilla cargada con datos de ejemplo.
 - **Analitica**: `FrmAnalisisDatos` contiene un gráfico base listo para conectar con datos reales.
 
@@ -79,3 +79,4 @@ La solución sigue una estructura por capas para separar responsabilidades:
 - El estado de la sesión se serializa en `%AppData%/MyMarket/appstate.json`. Puedes eliminar el archivo para reiniciar la sesión guardada.
 - Los repositorios usan `SqlConnectionFactory` para abrir conexiones y exponen métodos con validaciones explícitas (por ejemplo, verificación de CUIL y contraseñas).
 - Las pantallas de ventas incluyen datos simulados para fines de prototipo y pueden reemplazarse por consultas reales a la base cuando se implemente la lógica correspondiente.
+- Todo el código cuenta con comentarios XML e inline que describen la finalidad de cada clase, método y bloque relevante para facilitar su mantenimiento.
