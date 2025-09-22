@@ -67,7 +67,6 @@ public partial class FrmGestionUsuarios : Form
             txtCuil.Focus();
             return;
         }
-
         if (string.IsNullOrWhiteSpace(email))
         {
             MessageBox.Show("Debe ingresar un correo electrónico.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -81,7 +80,6 @@ public partial class FrmGestionUsuarios : Form
             txtEmail.Focus();
             return;
         }
-
         if (rolSeleccionado is null)
         {
             MessageBox.Show("Debe seleccionar un rol.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -102,7 +100,6 @@ public partial class FrmGestionUsuarios : Form
             txtContrasenia.Focus();
             return;
         }
-
         try
         {
             var nuevoEmpleado = new EmpleadoDto
@@ -198,7 +195,6 @@ public partial class FrmGestionUsuarios : Form
     {
         ActualizarEstadoBoton();
     }
-
     private void CargarRoles()
     {
         try

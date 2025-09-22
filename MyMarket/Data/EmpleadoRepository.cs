@@ -142,6 +142,7 @@ public class EmpleadoRepository
         command.CommandText = "UPDATE empleado SET activo = @activo WHERE id_empleado = @id";
         command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = idEmpleado });
         command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = activo });
+
         command.ExecuteNonQuery();
     }
 

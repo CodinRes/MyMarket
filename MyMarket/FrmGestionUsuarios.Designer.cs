@@ -135,6 +135,7 @@ namespace MyMarket
             this.btnEliminar.Size = new System.Drawing.Size(120, 30);
             this.btnEliminar.TabIndex = 1;
             this.btnEliminar.Text = "Cambiar estado";
+
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
             // 
