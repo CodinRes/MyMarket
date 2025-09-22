@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -28,6 +30,8 @@ public partial class FrmGestionUsuarios : Form
 
         btnEliminar.Visible = _puedeAdministrarUsuarios;
         btnEliminar.Enabled = false;
+        btnEditar.Visible = _puedeAdministrarUsuarios;
+        btnEditar.Enabled = false;
 
         txtCuil.KeyPress += TxtCuil_KeyPress;
         txtEmail.KeyPress += TxtEmail_KeyPress;
@@ -230,18 +234,131 @@ public partial class FrmGestionUsuarios : Form
         if (!_puedeAdministrarUsuarios)
         {
             btnEliminar.Enabled = false;
+            btnEditar.Enabled = false;
             return;
         }
 
         if (dgvUsuarios.CurrentRow?.DataBoundItem is not EmpleadoDto empleado)
         {
             btnEliminar.Enabled = false;
+            btnEditar.Enabled = false;
             btnEliminar.Text = "Cambiar estado";
             return;
         }
 
+        var puedeGestionar = PuedeGestionarEmpleado(empleado);
         btnEliminar.Text = empleado.Activo ? "Desactivar usuario" : "Activar usuario";
-        btnEliminar.Enabled = PuedeGestionarEmpleado(empleado);
+        btnEliminar.Enabled = puedeGestionar;
+        btnEditar.Enabled = puedeGestionar;
+    }
+
+    private void BtnEditar_Click(object? sender, EventArgs e)
+    {
+        if (dgvUsuarios.CurrentRow?.DataBoundItem is not EmpleadoDto empleado)
+        {
+            MessageBox.Show("Debe seleccionar un usuario.", "Gestión de usuarios",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        if (!PuedeGestionarEmpleado(empleado))
+        {
+            MessageBox.Show("Solo puede editar usuarios con un rol inferior.", "Acción no permitida",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        List<RolDto> rolesDisponibles;
+        if (cboRol.DataSource is IEnumerable<RolDto> rolesDataSource)
+        {
+            rolesDisponibles = rolesDataSource.ToList();
+        }
+        else
+        {
+            try
+            {
+                rolesDisponibles = _empleadoRepository.ObtenerRoles().ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"No fue posible obtener los roles. Detalle: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        if (rolesDisponibles.Count == 0)
+        {
+            MessageBox.Show("No hay roles disponibles para asignar.", "Gestión de usuarios",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        using var dialogo = new EditarUsuarioDialog(empleado, rolesDisponibles);
+        if (dialogo.ShowDialog(this) != DialogResult.OK)
+        {
+            return;
+        }
+
+        var email = dialogo.Email;
+        var rolSeleccionado = dialogo.RolSeleccionado;
+        var activo = dialogo.Activo;
+        var contrasenia = dialogo.Contrasenia;
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            MessageBox.Show("Debe ingresar un correo electrónico.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (!EmailRegex.IsMatch(email))
+        {
+            MessageBox.Show("Debe ingresar un correo electrónico válido.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (rolSeleccionado is null)
+        {
+            MessageBox.Show("Debe seleccionar un rol.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(contrasenia) && contrasenia.Length < 6)
+        {
+            MessageBox.Show("La contraseña debe tener al menos 6 caracteres.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        var empleadoActualizado = new EmpleadoDto
+        {
+            IdEmpleado = empleado.IdEmpleado,
+            CuilCuit = empleado.CuilCuit,
+            Email = email,
+            Activo = activo,
+            IdRol = rolSeleccionado.IdRol,
+            RolDescripcion = rolSeleccionado.Descripcion,
+            Nombre = empleado.Nombre,
+            Apellido = empleado.Apellido
+        };
+
+        try
+        {
+            _empleadoRepository.ActualizarEmpleado(empleadoActualizado, contrasenia);
+            MessageBox.Show("El usuario se actualizó correctamente.", "Gestión de usuarios",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var idSeleccionado = empleadoActualizado.IdEmpleado;
+            CargarEmpleados();
+            SeleccionarFilaPorId(idSeleccionado);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"No fue posible actualizar el usuario. Detalle: {ex.Message}", "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private bool PuedeGestionarEmpleado(EmpleadoDto empleado)
@@ -338,6 +455,208 @@ public partial class FrmGestionUsuarios : Form
         if (char.IsWhiteSpace(e.KeyChar))
         {
             e.Handled = true;
+        }
+    }
+
+    private void SeleccionarFilaPorId(int idEmpleado)
+    {
+        foreach (DataGridViewRow row in dgvUsuarios.Rows)
+        {
+            if (row.DataBoundItem is not EmpleadoDto empleado)
+            {
+                continue;
+            }
+
+            if (empleado.IdEmpleado != idEmpleado)
+            {
+                continue;
+            }
+
+            row.Selected = true;
+            if (row.Cells.Count > 0)
+            {
+                dgvUsuarios.CurrentCell = row.Cells[0];
+            }
+
+            break;
+        }
+    }
+
+    private sealed class EditarUsuarioDialog : Form
+    {
+        private readonly TextBox _txtEmail;
+        private readonly ComboBox _cboRol;
+        private readonly CheckBox _chkActivo;
+        private readonly TextBox _txtContrasenia;
+
+        public string Email => _txtEmail.Text.Trim();
+        public RolDto? RolSeleccionado => _cboRol.SelectedItem as RolDto;
+        public bool Activo => _chkActivo.Checked;
+        public string? Contrasenia => string.IsNullOrWhiteSpace(_txtContrasenia.Text) ? null : _txtContrasenia.Text;
+
+        public EditarUsuarioDialog(EmpleadoDto empleado, IReadOnlyCollection<RolDto> roles)
+        {
+            if (empleado is null)
+            {
+                throw new ArgumentNullException(nameof(empleado));
+            }
+
+            if (roles is null)
+            {
+                throw new ArgumentNullException(nameof(roles));
+            }
+
+            Text = "Editar usuario";
+            StartPosition = FormStartPosition.CenterParent;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Padding = new Padding(12);
+
+            var layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
+
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            var lblCuilTitulo = new Label
+            {
+                Text = "CUIL/CUIT:",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            var lblCuilValor = new Label
+            {
+                Text = empleado.CuilCuit,
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+
+            var lblEmail = new Label
+            {
+                Text = "Correo electrónico:",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            _txtEmail = new TextBox
+            {
+                Text = empleado.Email,
+                Dock = DockStyle.Fill
+            };
+
+            var lblContrasenia = new Label
+            {
+                Text = "Contraseña (opcional):",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            _txtContrasenia = new TextBox
+            {
+                Dock = DockStyle.Fill,
+                UseSystemPasswordChar = true
+            };
+
+            var lblRol = new Label
+            {
+                Text = "Rol:",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            _cboRol = new ComboBox
+            {
+                Dock = DockStyle.Fill,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                DataSource = roles.ToList(),
+                DisplayMember = nameof(RolDto.Descripcion),
+                ValueMember = nameof(RolDto.IdRol)
+            };
+
+            var rolSeleccionado = roles.FirstOrDefault(r => r.IdRol == empleado.IdRol);
+            if (rolSeleccionado is not null)
+            {
+                _cboRol.SelectedItem = rolSeleccionado;
+            }
+
+            _chkActivo = new CheckBox
+            {
+                Text = "Usuario activo",
+                Checked = empleado.Activo,
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+
+            layout.Controls.Add(lblCuilTitulo, 0, 0);
+            layout.Controls.Add(lblCuilValor, 1, 0);
+            layout.Controls.Add(lblEmail, 0, 1);
+            layout.Controls.Add(_txtEmail, 1, 1);
+            layout.Controls.Add(lblContrasenia, 0, 2);
+            layout.Controls.Add(_txtContrasenia, 1, 2);
+            layout.Controls.Add(lblRol, 0, 3);
+            layout.Controls.Add(_cboRol, 1, 3);
+            layout.Controls.Add(_chkActivo, 1, 4);
+
+            var panelBotones = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.RightToLeft,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(0, 12, 0, 0)
+            };
+
+            var btnCancelar = new Button
+            {
+                Text = "Cancelar",
+                DialogResult = DialogResult.Cancel,
+                AutoSize = true
+            };
+
+            var btnGuardar = new Button
+            {
+                Text = "Guardar cambios",
+                AutoSize = true,
+                BackColor = Color.FromArgb(55, 130, 200),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.Click += (_, _) =>
+            {
+                if (_cboRol.SelectedItem is null)
+                {
+                    MessageBox.Show("Debe seleccionar un rol.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult = DialogResult.OK;
+                Close();
+            };
+
+            panelBotones.Controls.Add(btnCancelar);
+            panelBotones.Controls.Add(btnGuardar);
+
+            layout.Controls.Add(panelBotones, 0, 5);
+            layout.SetColumnSpan(panelBotones, 2);
+
+            Controls.Add(layout);
+
+            AcceptButton = btnGuardar;
+            CancelButton = btnCancelar;
         }
     }
 }
