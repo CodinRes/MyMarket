@@ -49,7 +49,7 @@ public partial class FrmPrincipal : Form
 
             btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
             btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
-            btnClientesSuscriptos.Click += (s, e) => AbrirEnPanel(new FrmClientesSuscriptos());
+            btnClientesSuscriptos.Click += BtnClientesSuscriptos_Click;
             btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
             btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
             btnGestionUsuarios.Click += BtnGestionUsuarios_Click;
@@ -132,7 +132,7 @@ public partial class FrmPrincipal : Form
             {
                 lblUsuario.Text = "Iniciar sesión";
                 btnGestionUsuarios.Visible = false;
-                DeshabilitarOpciones();
+                AplicarPermisosPorRol(string.Empty);
                 _menuSesion.Items.Add(new ToolStripMenuItem("Iniciar sesión", null, (_, _) => MostrarDialogoLogin()));
                 return;
             }
@@ -178,6 +178,7 @@ public partial class FrmPrincipal : Form
                 return;
             }
 
+            var puedeGestionarClientesSuscriptos = TienePermisoClientesSuscriptos(rolDescripcion);
             var rolNormalizado = rolDescripcion.Trim().ToLowerInvariant();
 
             if (rolNormalizado.Contains("gerente"))
@@ -185,27 +186,34 @@ public partial class FrmPrincipal : Form
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
-                btnClientesSuscriptos.Enabled = true;
                 btnAnalisisDatos.Enabled = true;
                 btnGestionUsuarios.Enabled = true;
-                return;
             }
-
-            if (rolNormalizado.Contains("admin") || rolNormalizado.Contains("gestor"))
+            else if (rolNormalizado.Contains("admin") || rolNormalizado.Contains("gestor"))
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
-                btnClientesSuscriptos.Enabled = true;
-                return;
             }
-
-            if (rolNormalizado.Contains("vend"))
+            else if (rolNormalizado.Contains("vend"))
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
-                btnClientesSuscriptos.Enabled = true;
             }
+
+            btnClientesSuscriptos.Enabled = puedeGestionarClientesSuscriptos;
+        }
+
+        private void BtnClientesSuscriptos_Click(object? sender, EventArgs e)
+        {
+            if (!TienePermisoClientesSuscriptos(_empleadoAutenticado?.RolDescripcion))
+            {
+                MessageBox.Show("Solo los gerentes o administradores pueden acceder a los clientes suscriptos.",
+                    "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AbrirEnPanel(new FrmClientesSuscriptos());
         }
 
         private void RestaurarEstadoAnterior()
@@ -264,6 +272,20 @@ public partial class FrmPrincipal : Form
             }
 
             _almacenEstadoAplicacion.Guardar(estado);
+        }
+
+        private static bool TienePermisoClientesSuscriptos(string? rolDescripcion)
+        {
+            if (string.IsNullOrWhiteSpace(rolDescripcion))
+            {
+                return false;
+            }
+
+            var rolNormalizado = rolDescripcion.Trim().ToLowerInvariant();
+
+            return rolNormalizado.Contains("gerente") ||
+                   rolNormalizado.Contains("admin") ||
+                   rolNormalizado.Contains("gestor");
         }
 
         private static bool EsGerente(string? rolDescripcion)
