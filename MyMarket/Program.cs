@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
-using MyMarket.Data.Infrastructure;
-using MyMarket.Forms.Main;
+using MyMarket.Datos.Infraestructura;
+using MyMarket.Formularios.Principal;
 
 namespace MyMarket;
 
