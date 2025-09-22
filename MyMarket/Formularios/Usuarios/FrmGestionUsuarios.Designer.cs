@@ -32,6 +32,7 @@ partial class FrmGestionUsuarios
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
             this.bindingSourceUsuarios = new System.Windows.Forms.BindingSource(this.components);
             this.panelAcciones = new System.Windows.Forms.Panel();
+            this.btnEditar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnRefrescar = new System.Windows.Forms.Button();
             this.grpNuevoUsuario = new System.Windows.Forms.GroupBox();
@@ -115,6 +116,7 @@ partial class FrmGestionUsuarios
             // 
             // panelAcciones
             // 
+            this.panelAcciones.Controls.Add(this.btnEditar);
             this.panelAcciones.Controls.Add(this.btnEliminar);
             this.panelAcciones.Controls.Add(this.btnRefrescar);
             this.panelAcciones.Dock = System.Windows.Forms.DockStyle.Top;
@@ -123,9 +125,23 @@ partial class FrmGestionUsuarios
             this.panelAcciones.Padding = new System.Windows.Forms.Padding(12);
             this.panelAcciones.Size = new System.Drawing.Size(784, 56);
             this.panelAcciones.TabIndex = 1;
-            // 
+            //
+            // btnEditar
+            //
+            this.btnEditar.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnEditar.BackColor = System.Drawing.Color.FromArgb(55, 130, 200);
+            this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditar.ForeColor = System.Drawing.Color.White;
+            this.btnEditar.Location = new System.Drawing.Point(520, 15);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(120, 30);
+            this.btnEditar.TabIndex = 2;
+            this.btnEditar.Text = "Editar usuario";
+            this.btnEditar.UseVisualStyleBackColor = false;
+            this.btnEditar.Click += new System.EventHandler(this.BtnEditar_Click);
+            //
             // btnEliminar
-            // 
+            //
             this.btnEliminar.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnEliminar.BackColor = System.Drawing.Color.Firebrick;
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -135,7 +151,6 @@ partial class FrmGestionUsuarios
             this.btnEliminar.Size = new System.Drawing.Size(120, 30);
             this.btnEliminar.TabIndex = 1;
             this.btnEliminar.Text = "Cambiar estado";
-
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
             // 
@@ -334,6 +349,7 @@ partial class FrmGestionUsuarios
         private System.Windows.Forms.DataGridView dgvUsuarios;
         private System.Windows.Forms.BindingSource bindingSourceUsuarios;
         private System.Windows.Forms.Panel panelAcciones;
+        private System.Windows.Forms.Button btnEditar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnRefrescar;
         private System.Windows.Forms.GroupBox grpNuevoUsuario;

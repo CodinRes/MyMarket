@@ -131,6 +131,58 @@ public class EmpleadoRepository
         return empleado;
     }
 
+    public void ActualizarEmpleado(EmpleadoDto empleado, string? contrasenia)
+    {
+        if (empleado is null)
+        {
+            throw new ArgumentNullException(nameof(empleado));
+        }
+
+        if (empleado.IdEmpleado <= 0)
+        {
+            throw new ArgumentException("El empleado debe tener un identificador válido.", nameof(empleado));
+        }
+
+        if (string.IsNullOrWhiteSpace(empleado.Email))
+        {
+            throw new ArgumentException("El correo electrónico es obligatorio.", nameof(empleado));
+        }
+
+        using var connection = _connectionFactory.CreateOpenConnection();
+        string? passwordColumn = null;
+        if (!string.IsNullOrWhiteSpace(contrasenia))
+        {
+            passwordColumn = ResolverColumnaContrasena(connection);
+        }
+
+        using var command = connection.CreateCommand();
+        if (passwordColumn is not null)
+        {
+            command.CommandText = $@"UPDATE empleado
+                                     SET email = @correo,
+                                         activo = @activo,
+                                         id_rol = @rol,
+                                         [{passwordColumn}] = @password
+                                     WHERE id_empleado = @id";
+            command.Parameters.Add(new SqlParameter("@password", SqlDbType.VarChar, 100) { Value = contrasenia });
+        }
+        else
+        {
+            command.CommandText = @"UPDATE empleado
+                                     SET email = @correo,
+                                         activo = @activo,
+                                         id_rol = @rol
+                                     WHERE id_empleado = @id";
+        }
+
+        command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = empleado.IdEmpleado });
+        command.Parameters.Add(new SqlParameter("@correo", SqlDbType.VarChar, 100) { Value = empleado.Email });
+        command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = empleado.Activo });
+        command.Parameters.Add(new SqlParameter("@rol", SqlDbType.Int) { Value = empleado.IdRol });
+
+        command.ExecuteNonQuery();
+    }
+
     public void DesactivarEmpleado(int idEmpleado)
     {
         CambiarEstadoEmpleado(idEmpleado, false);
