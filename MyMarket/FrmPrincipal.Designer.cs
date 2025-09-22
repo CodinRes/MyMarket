@@ -41,7 +41,7 @@
             this.Controls.Add(this.panelMenu);
 
             // Botones del menú (Dock = Top)
-            this.btnEmitirRecibo = CreateMenuButton("Emitir Recibo");
+            this.btnEmitirRecibo = CreateMenuButton("Venta");
             this.btnRecibosEmitidos = CreateMenuButton("Recibos Emitidos");
             this.btnControlStock = CreateMenuButton("Control de Stock");
             this.btnAnalisisDatos = CreateMenuButton("Análisis de Datos");
@@ -57,7 +57,7 @@
 
             // Encabezado pequeño del menú
             this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblTitulo.Text = "KIOSCO";
+            this.lblTitulo.Text = "MyMarket";
             this.lblTitulo.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTitulo.Height = 70;
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
@@ -91,7 +91,7 @@
             this.panelContenedor.BringToFront();
 
             // Config general del form
-            this.Text = "Sistema de Gestión - Kiosco";
+            this.Text = "Sistema de Gestión - MyMarket";
             this.Width = 1100;
             this.Height = 700;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

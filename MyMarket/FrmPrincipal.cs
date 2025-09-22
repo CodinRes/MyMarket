@@ -78,7 +78,7 @@ namespace MyMarket
                 return;
             }
 
-            AbrirEnPanel(new FrmGestionUsuarios(_empleadoRepository, EsGerente(_empleadoAutenticado.RolDescripcion)));
+            AbrirEnPanel(new FrmGestionUsuarios(_empleadoRepository, _empleadoAutenticado));
         }
 
         private void LblUsuario_Click(object? sender, EventArgs e)
@@ -122,12 +122,14 @@ namespace MyMarket
             if (empleado is null)
             {
                 lblUsuario.Text = "Iniciar sesión";
+                btnGestionUsuarios.Visible = false;
                 DeshabilitarOpciones();
                 _menuSesion.Items.Add(new ToolStripMenuItem("Iniciar sesión", null, (_, _) => MostrarDialogoLogin()));
                 return;
             }
 
             lblUsuario.Text = $"Empleado: {empleado.NombreParaMostrar}";
+            btnGestionUsuarios.Visible = true;
 
             var rolItem = new ToolStripMenuItem($"Rol: {empleado.RolDescripcion}")
             {
@@ -155,7 +157,6 @@ namespace MyMarket
             btnControlStock.Enabled = false;
             btnAnalisisDatos.Enabled = false;
             btnGestionUsuarios.Enabled = false;
-            btnGestionUsuarios.Visible = false;
         }
 
         private void AplicarPermisosPorRol(string rolDescripcion)
@@ -176,7 +177,6 @@ namespace MyMarket
                 btnControlStock.Enabled = true;
                 btnAnalisisDatos.Enabled = true;
                 btnGestionUsuarios.Enabled = true;
-                btnGestionUsuarios.Visible = true;
                 return;
             }
 
@@ -267,6 +267,9 @@ namespace MyMarket
         {
             panelContenedor.Controls.Clear();
             form.TopLevel = false;
+            form.FormBorderStyle = FormBorderStyle.None;
+            form.MaximizeBox = false;
+            form.MinimizeBox = false;
             form.Dock = DockStyle.Fill;
             panelContenedor.Controls.Add(form);
             form.Show();

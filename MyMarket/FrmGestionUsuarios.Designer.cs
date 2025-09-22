@@ -134,7 +134,8 @@ namespace MyMarket
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(120, 30);
             this.btnEliminar.TabIndex = 1;
-            this.btnEliminar.Text = "Quitar usuario";
+            this.btnEliminar.Text = "Cambiar estado";
+
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
             // 
@@ -205,7 +206,7 @@ namespace MyMarket
             // 
             this.txtCuil.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right))));
             this.txtCuil.Location = new System.Drawing.Point(231, 7);
-            this.txtCuil.MaxLength = 13;
+            this.txtCuil.MaxLength = 11;
             this.txtCuil.Name = "txtCuil";
             this.txtCuil.Size = new System.Drawing.Size(526, 23);
             this.txtCuil.TabIndex = 1;

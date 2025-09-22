@@ -132,10 +132,17 @@ public class EmpleadoRepository
 
     public void DesactivarEmpleado(int idEmpleado)
     {
+        CambiarEstadoEmpleado(idEmpleado, false);
+    }
+
+    public void CambiarEstadoEmpleado(int idEmpleado, bool activo)
+    {
         using var connection = _connectionFactory.CreateOpenConnection();
         using var command = connection.CreateCommand();
-        command.CommandText = "UPDATE empleado SET activo = 0 WHERE id_empleado = @id";
+        command.CommandText = "UPDATE empleado SET activo = @activo WHERE id_empleado = @id";
         command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = idEmpleado });
+        command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = activo });
+
         command.ExecuteNonQuery();
     }
 
