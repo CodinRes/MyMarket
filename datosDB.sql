@@ -1,5 +1,5 @@
-﻿INSERT INTO [dbo].[rol] ([id_rol], [descripcion]) VALUES (2, N'administrador')
 INSERT INTO [dbo].[rol] ([id_rol], [descripcion]) VALUES (1, N'gerente')
+INSERT INTO [dbo].[rol] ([id_rol], [descripcion]) VALUES (2, N'administrador')
 INSERT INTO [dbo].[rol] ([id_rol], [descripcion]) VALUES (3, N'vendedor')
 
 
@@ -13,10 +13,10 @@ INSERT INTO [dbo].[cliente] ([dni_cliente], [nombre], [apellido], [direccion], [
 INSERT INTO [dbo].[cliente] ([dni_cliente], [nombre], [apellido], [direccion], [fecha_registro], [email], [estado]) VALUES (N'87654321', N'María', N'López', N'Calle Falsa 456', N'2025-09-21', N'maria.lopez@mail.com', 1)
 
 SET IDENTITY_INSERT [dbo].[empleado] ON
-INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [activo], [id_rol]) VALUES (1, N'12345678910', N'1234@gmail.com', N'1234', 1, 1)
-INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [activo], [id_rol]) VALUES (5, N'20123456789', N'admin@tienda.com', N'admin123', 1, 2)
-INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [activo], [id_rol]) VALUES (6, N'20987654321', N'vendedor@tienda.com', N'venta456', 1, 3)
-INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [activo], [id_rol]) VALUES (7, N'20991234567', N'cajero@tienda.com', N'caja789', 1, 3)
+INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [nombre], [apellido], [activo], [id_rol]) VALUES (1, N'12345678910', N'1234@gmail.com', N'1234', N'Ana', N'Pérez', 1, 1)
+INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [nombre], [apellido], [activo], [id_rol]) VALUES (5, N'20123456789', N'admin@tienda.com', N'admin123', N'Carlos', N'Fernández', 1, 2)
+INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [nombre], [apellido], [activo], [id_rol]) VALUES (6, N'20987654321', N'vendedor@tienda.com', N'venta456', N'Lucía', N'Gómez', 1, 3)
+INSERT INTO [dbo].[empleado] ([id_empleado], [cuil_cuit], [email], [contraseña], [nombre], [apellido], [activo], [id_rol]) VALUES (7, N'20991234567', N'cajero@tienda.com', N'caja789', N'Pedro', N'López', 1, 3)
 SET IDENTITY_INSERT [dbo].[empleado] OFF
 
 

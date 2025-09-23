@@ -105,6 +105,72 @@ public class EmpleadoRepository
     }
 
     /// <summary>
+    ///     Verifica si existe un empleado con el CUIL/CUIT indicado.
+    /// </summary>
+    /// <param name="cuilCuit">CUIL/CUIT a validar.</param>
+    /// <param name="excluirIdEmpleado">Identificador opcional para excluir de la búsqueda (útil al editar).</param>
+    /// <returns><c>true</c> si existe otro empleado con el mismo CUIL/CUIT.</returns>
+    public bool ExisteEmpleadoPorCuil(string cuilCuit, int? excluirIdEmpleado = null)
+    {
+        if (string.IsNullOrWhiteSpace(cuilCuit))
+        {
+            throw new ArgumentException("El CUIL/CUIT no puede estar vacío.", nameof(cuilCuit));
+        }
+
+        using var connection = _connectionFactory.CreateOpenConnection();
+        using var command = connection.CreateCommand();
+
+        if (excluirIdEmpleado.HasValue)
+        {
+            command.CommandText = "SELECT COUNT(1) FROM empleado WHERE cuil_cuit = @cuil AND id_empleado <> @id";
+            command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = excluirIdEmpleado.Value });
+        }
+        else
+        {
+            command.CommandText = "SELECT COUNT(1) FROM empleado WHERE cuil_cuit = @cuil";
+        }
+
+        command.Parameters.Add(new SqlParameter("@cuil", SqlDbType.VarChar, 13) { Value = cuilCuit });
+
+        var resultado = command.ExecuteScalar();
+        var cantidad = Convert.ToInt32(resultado);
+        return cantidad > 0;
+    }
+
+    /// <summary>
+    ///     Verifica si existe un empleado con el correo indicado.
+    /// </summary>
+    /// <param name="email">Correo electrónico a validar.</param>
+    /// <param name="excluirIdEmpleado">Identificador opcional para excluir de la búsqueda (útil al editar).</param>
+    /// <returns><c>true</c> si existe otro empleado con el mismo correo.</returns>
+    public bool ExisteEmpleadoPorEmail(string email, int? excluirIdEmpleado = null)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw new ArgumentException("El correo electrónico no puede estar vacío.", nameof(email));
+        }
+
+        using var connection = _connectionFactory.CreateOpenConnection();
+        using var command = connection.CreateCommand();
+
+        if (excluirIdEmpleado.HasValue)
+        {
+            command.CommandText = "SELECT COUNT(1) FROM empleado WHERE email = @correo AND id_empleado <> @id";
+            command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = excluirIdEmpleado.Value });
+        }
+        else
+        {
+            command.CommandText = "SELECT COUNT(1) FROM empleado WHERE email = @correo";
+        }
+
+        command.Parameters.Add(new SqlParameter("@correo", SqlDbType.VarChar, 100) { Value = email });
+
+        var resultado = command.ExecuteScalar();
+        var cantidad = Convert.ToInt32(resultado);
+        return cantidad > 0;
+    }
+
+    /// <summary>
     ///     Inserta un nuevo empleado con la contraseña indicada.
     /// </summary>
     public EmpleadoDto CrearEmpleado(EmpleadoDto empleado, string contrasenia)
@@ -124,6 +190,16 @@ public class EmpleadoRepository
             throw new ArgumentException("El correo electrónico es obligatorio.", nameof(empleado));
         }
 
+        if (string.IsNullOrWhiteSpace(empleado.Nombre))
+        {
+            throw new ArgumentException("El nombre es obligatorio.", nameof(empleado));
+        }
+
+        if (string.IsNullOrWhiteSpace(empleado.Apellido))
+        {
+            throw new ArgumentException("El apellido es obligatorio.", nameof(empleado));
+        }
+
         if (string.IsNullOrWhiteSpace(contrasenia))
         {
             throw new ArgumentException("La contraseña no puede estar vacía.", nameof(contrasenia));
@@ -133,13 +209,15 @@ public class EmpleadoRepository
         var passwordColumn = ResolverColumnaContrasena(connection);
 
         using var command = connection.CreateCommand();
-        command.CommandText = $@"INSERT INTO empleado (cuil_cuit, email, [{passwordColumn}], activo, id_rol)
-                                 VALUES (@cuil, @correo, @password, @activo, @rol);
+        command.CommandText = $@"INSERT INTO empleado (cuil_cuit, email, [{passwordColumn}], nombre, apellido, activo, id_rol)
+                                 VALUES (@cuil, @correo, @password, @nombre, @apellido, @activo, @rol);
                                  SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
         command.Parameters.Add(new SqlParameter("@cuil", SqlDbType.VarChar, 13) { Value = empleado.CuilCuit });
         command.Parameters.Add(new SqlParameter("@correo", SqlDbType.VarChar, 100) { Value = empleado.Email });
         command.Parameters.Add(new SqlParameter("@password", SqlDbType.VarChar, 100) { Value = contrasenia });
+        command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.VarChar, 100) { Value = empleado.Nombre });
+        command.Parameters.Add(new SqlParameter("@apellido", SqlDbType.VarChar, 100) { Value = empleado.Apellido });
         command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = empleado.Activo });
         command.Parameters.Add(new SqlParameter("@rol", SqlDbType.Int) { Value = empleado.IdRol });
 
@@ -171,6 +249,16 @@ public class EmpleadoRepository
             throw new ArgumentException("El correo electrónico es obligatorio.", nameof(empleado));
         }
 
+        if (string.IsNullOrWhiteSpace(empleado.Nombre))
+        {
+            throw new ArgumentException("El nombre es obligatorio.", nameof(empleado));
+        }
+
+        if (string.IsNullOrWhiteSpace(empleado.Apellido))
+        {
+            throw new ArgumentException("El apellido es obligatorio.", nameof(empleado));
+        }
+
         using var connection = _connectionFactory.CreateOpenConnection();
         string? passwordColumn = null;
         if (!string.IsNullOrWhiteSpace(contrasenia))
@@ -185,6 +273,8 @@ public class EmpleadoRepository
                                      SET email = @correo,
                                          activo = @activo,
                                          id_rol = @rol,
+                                         nombre = @nombre,
+                                         apellido = @apellido,
                                          [{passwordColumn}] = @password
                                      WHERE id_empleado = @id";
             command.Parameters.Add(new SqlParameter("@password", SqlDbType.VarChar, 100) { Value = contrasenia });
@@ -194,12 +284,16 @@ public class EmpleadoRepository
             command.CommandText = @"UPDATE empleado
                                      SET email = @correo,
                                          activo = @activo,
-                                         id_rol = @rol
+                                         id_rol = @rol,
+                                         nombre = @nombre,
+                                         apellido = @apellido
                                      WHERE id_empleado = @id";
         }
 
         command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int) { Value = empleado.IdEmpleado });
         command.Parameters.Add(new SqlParameter("@correo", SqlDbType.VarChar, 100) { Value = empleado.Email });
+        command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.VarChar, 100) { Value = empleado.Nombre });
+        command.Parameters.Add(new SqlParameter("@apellido", SqlDbType.VarChar, 100) { Value = empleado.Apellido });
         command.Parameters.Add(new SqlParameter("@activo", SqlDbType.Bit) { Value = empleado.Activo });
         command.Parameters.Add(new SqlParameter("@rol", SqlDbType.Int) { Value = empleado.IdRol });
 
