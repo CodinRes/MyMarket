@@ -101,6 +101,26 @@ public partial class FrmClientesSuscriptos : Form
             Estado = cboEstado.SelectedItem?.ToString() ?? string.Empty
         };
 
+        var existeDni = _clientes.Any(c => !ReferenceEquals(c, _clienteSeleccionado) &&
+                                           string.Equals(c.Dni, clienteForm.Dni, StringComparison.OrdinalIgnoreCase));
+        if (existeDni)
+        {
+            MessageBox.Show("Ya existe un cliente registrado con el mismo DNI.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtDni.Focus();
+            return;
+        }
+
+        var existeEmail = _clientes.Any(c => !ReferenceEquals(c, _clienteSeleccionado) &&
+                                             string.Equals(c.Email, clienteForm.Email, StringComparison.OrdinalIgnoreCase));
+        if (existeEmail)
+        {
+            MessageBox.Show("Ya existe un cliente registrado con el mismo correo electrónico.", "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtEmail.Focus();
+            return;
+        }
+
         if (_esEdicion && _clienteSeleccionado is not null)
         {
             // Actualiza el registro existente y refresca la grilla.
