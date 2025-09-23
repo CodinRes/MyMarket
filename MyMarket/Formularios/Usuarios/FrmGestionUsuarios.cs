@@ -62,6 +62,8 @@ public partial class FrmGestionUsuarios : Form
     private void BtnAgregar_Click(object? sender, EventArgs e)
     {
         var cuil = txtCuil.Text.Trim();
+        var nombre = txtNombre.Text.Trim();
+        var apellido = txtApellido.Text.Trim();
         var email = txtEmail.Text.Trim();
         var contrasenia = txtContrasenia.Text;
         var rolSeleccionado = cboRol.SelectedItem as RolDto;
@@ -78,6 +80,20 @@ public partial class FrmGestionUsuarios : Form
         {
             MessageBox.Show("El CUIL/CUIT debe contener 11 dígitos numéricos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             txtCuil.Focus();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            MessageBox.Show("Debe ingresar el nombre del empleado.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtNombre.Focus();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(apellido))
+        {
+            MessageBox.Show("Debe ingresar el apellido del empleado.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtApellido.Focus();
             return;
         }
         if (string.IsNullOrWhiteSpace(email))
@@ -113,6 +129,22 @@ public partial class FrmGestionUsuarios : Form
             txtContrasenia.Focus();
             return;
         }
+
+        var empleadosActuales = bindingSourceUsuarios.Cast<EmpleadoDto>().ToList();
+
+        if (empleadosActuales.Any(e => string.Equals(e.CuilCuit, cuil, StringComparison.OrdinalIgnoreCase)))
+        {
+            MessageBox.Show("Ya existe un usuario registrado con el mismo CUIL/CUIT.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtCuil.Focus();
+            return;
+        }
+
+        if (empleadosActuales.Any(e => string.Equals(e.Email, email, StringComparison.OrdinalIgnoreCase)))
+        {
+            MessageBox.Show("Ya existe un usuario registrado con el mismo correo electrónico.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtEmail.Focus();
+            return;
+        }
         try
         {
             var nuevoEmpleado = new EmpleadoDto
@@ -121,7 +153,9 @@ public partial class FrmGestionUsuarios : Form
                 Email = email,
                 Activo = activo,
                 IdRol = rolSeleccionado.IdRol,
-                RolDescripcion = rolSeleccionado.Descripcion
+                RolDescripcion = rolSeleccionado.Descripcion,
+                Nombre = nombre,
+                Apellido = apellido
             };
 
             _empleadoRepository.CrearEmpleado(nuevoEmpleado, contrasenia);
@@ -240,6 +274,8 @@ public partial class FrmGestionUsuarios : Form
     private void LimpiarFormulario()
     {
         txtCuil.Clear();
+        txtNombre.Clear();
+        txtApellido.Clear();
         txtEmail.Clear();
         txtContrasenia.Clear();
         chkActivo.Checked = true;
@@ -368,8 +404,8 @@ public partial class FrmGestionUsuarios : Form
             Activo = activo,
             IdRol = rolSeleccionado.IdRol,
             RolDescripcion = rolSeleccionado.Descripcion,
-            Nombre = empleado.Nombre,
-            Apellido = empleado.Apellido
+            Nombre = dialogo.Nombre,
+            Apellido = dialogo.Apellido
         };
 
         try
@@ -526,11 +562,15 @@ public partial class FrmGestionUsuarios : Form
     /// </summary>
     private sealed class EditarUsuarioDialog : Form
     {
+        private readonly TextBox _txtNombre;
+        private readonly TextBox _txtApellido;
         private readonly TextBox _txtEmail;
         private readonly ComboBox _cboRol;
         private readonly CheckBox _chkActivo;
         private readonly TextBox _txtContrasenia;
 
+        public string Nombre => _txtNombre.Text.Trim();
+        public string Apellido => _txtApellido.Text.Trim();
         public string Email => _txtEmail.Text.Trim();
         public RolDto? RolSeleccionado => _cboRol.SelectedItem as RolDto;
         public bool Activo => _chkActivo.Checked;
@@ -574,6 +614,8 @@ public partial class FrmGestionUsuarios : Form
             layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             var lblCuilTitulo = new Label
             {
@@ -586,6 +628,32 @@ public partial class FrmGestionUsuarios : Form
                 Text = empleado.CuilCuit,
                 Anchor = AnchorStyles.Left,
                 AutoSize = true
+            };
+
+            var lblNombre = new Label
+            {
+                Text = "Nombre:",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            _txtNombre = new TextBox
+            {
+                Text = empleado.Nombre ?? string.Empty,
+                Dock = DockStyle.Fill,
+                MaxLength = 100
+            };
+
+            var lblApellido = new Label
+            {
+                Text = "Apellido:",
+                Anchor = AnchorStyles.Left,
+                AutoSize = true
+            };
+            _txtApellido = new TextBox
+            {
+                Text = empleado.Apellido ?? string.Empty,
+                Dock = DockStyle.Fill,
+                MaxLength = 100
             };
 
             var lblEmail = new Label
@@ -643,13 +711,17 @@ public partial class FrmGestionUsuarios : Form
 
             layout.Controls.Add(lblCuilTitulo, 0, 0);
             layout.Controls.Add(lblCuilValor, 1, 0);
-            layout.Controls.Add(lblEmail, 0, 1);
-            layout.Controls.Add(_txtEmail, 1, 1);
-            layout.Controls.Add(lblContrasenia, 0, 2);
-            layout.Controls.Add(_txtContrasenia, 1, 2);
-            layout.Controls.Add(lblRol, 0, 3);
-            layout.Controls.Add(_cboRol, 1, 3);
-            layout.Controls.Add(_chkActivo, 1, 4);
+            layout.Controls.Add(lblNombre, 0, 1);
+            layout.Controls.Add(_txtNombre, 1, 1);
+            layout.Controls.Add(lblApellido, 0, 2);
+            layout.Controls.Add(_txtApellido, 1, 2);
+            layout.Controls.Add(lblEmail, 0, 3);
+            layout.Controls.Add(_txtEmail, 1, 3);
+            layout.Controls.Add(lblContrasenia, 0, 4);
+            layout.Controls.Add(_txtContrasenia, 1, 4);
+            layout.Controls.Add(lblRol, 0, 5);
+            layout.Controls.Add(_cboRol, 1, 5);
+            layout.Controls.Add(_chkActivo, 1, 6);
 
             var panelBotones = new FlowLayoutPanel
             {
@@ -678,6 +750,22 @@ public partial class FrmGestionUsuarios : Form
             btnGuardar.FlatAppearance.BorderSize = 0;
             btnGuardar.Click += (_, _) =>
             {
+                if (string.IsNullOrWhiteSpace(Nombre))
+                {
+                    MessageBox.Show("Debe ingresar el nombre del empleado.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _txtNombre.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(Apellido))
+                {
+                    MessageBox.Show("Debe ingresar el apellido del empleado.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _txtApellido.Focus();
+                    return;
+                }
+
                 if (_cboRol.SelectedItem is null)
                 {
                     MessageBox.Show("Debe seleccionar un rol.", "Validación",
@@ -692,7 +780,7 @@ public partial class FrmGestionUsuarios : Form
             panelBotones.Controls.Add(btnCancelar);
             panelBotones.Controls.Add(btnGuardar);
 
-            layout.Controls.Add(panelBotones, 0, 5);
+            layout.Controls.Add(panelBotones, 0, 7);
             layout.SetColumnSpan(panelBotones, 2);
 
             Controls.Add(layout);
