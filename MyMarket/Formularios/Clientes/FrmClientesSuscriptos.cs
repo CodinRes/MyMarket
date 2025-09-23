@@ -1,33 +1,39 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using MyMarket.Datos.Modelos;
+using MyMarket.Datos.Repositorios;
 
 namespace MyMarket.Formularios.Clientes;
 
 /// <summary>
-///     Vista prototipo para administrar clientes suscriptos con datos en memoria.
+///     Pantalla de administración de clientes suscriptos conectada a la base de datos.
 /// </summary>
 public partial class FrmClientesSuscriptos : Form
 {
+    private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+
     private readonly BindingList<ClienteViewModel> _clientes = new();
+    private readonly ClienteRepository _clienteRepository;
     private ClienteViewModel? _clienteSeleccionado;
     private bool _esEdicion;
 
-    public FrmClientesSuscriptos()
+    public FrmClientesSuscriptos(ClienteRepository clienteRepository)
     {
+        _clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(clienteRepository));
+
         InitializeComponent();
 
-        // Enlaza la grilla con la lista en memoria.
         dgvClientes.DataSource = bindingSourceClientes;
         bindingSourceClientes.DataSource = _clientes;
         dgvClientes.SelectionChanged += DgvClientes_SelectionChanged;
 
         btnEditar.Enabled = false;
 
-        cboEstado.Items.AddRange(new object[] { "Activo", "Inactivo", "Suspendido" });
+        cboEstado.Items.AddRange(new object[] { "Activo", "Inactivo" });
         if (cboEstado.Items.Count > 0)
         {
             cboEstado.SelectedIndex = 0;
@@ -36,13 +42,11 @@ public partial class FrmClientesSuscriptos : Form
 
     private void FrmClientesSuscriptos_Load(object? sender, EventArgs e)
     {
-        // Al cargar la pantalla se muestran clientes de ejemplo.
-        CargarClientesDemo();
+        CargarClientesDesdeBase();
     }
 
     private void FrmClientesSuscriptos_FormClosed(object? sender, FormClosedEventArgs e)
     {
-        // Limpia los recursos de enlace cuando la ventana se cierra.
         dgvClientes.DataSource = null;
         bindingSourceClientes.Dispose();
     }
@@ -78,9 +82,11 @@ public partial class FrmClientesSuscriptos : Form
 
     private void BtnActualizar_Click(object? sender, EventArgs e)
     {
-        CargarClientesDemo();
-        MessageBox.Show("La lista de clientes se refrescó con datos de demostración.", "Clientes suscriptos",
-            MessageBoxButtons.OK, MessageBoxIcon.Information);
+        if (CargarClientesDesdeBase())
+        {
+            MessageBox.Show("La lista de clientes se actualizó desde la base de datos.", "Clientes suscriptos",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 
     private void BtnGuardar_Click(object? sender, EventArgs e)
@@ -91,61 +97,75 @@ public partial class FrmClientesSuscriptos : Form
             return;
         }
 
-        var clienteForm = new ClienteViewModel
+        var estadoSeleccionado = cboEstado.SelectedItem?.ToString() ?? string.Empty;
+        var clienteDto = new ClienteDto
         {
             Dni = txtDni.Text.Trim(),
             Nombre = txtNombre.Text.Trim(),
             Apellido = txtApellido.Text.Trim(),
             Direccion = txtDireccion.Text.Trim(),
             Email = txtEmail.Text.Trim(),
-            Estado = cboEstado.SelectedItem?.ToString() ?? string.Empty
+            Activo = string.Equals(estadoSeleccionado, "Activo", StringComparison.OrdinalIgnoreCase)
         };
 
-        var existeDni = _clientes.Any(c => !ReferenceEquals(c, _clienteSeleccionado) &&
-                                           string.Equals(c.Dni, clienteForm.Dni, StringComparison.OrdinalIgnoreCase));
-        if (existeDni)
+        try
         {
-            MessageBox.Show("Ya existe un cliente registrado con el mismo DNI.", "Validación",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            txtDni.Focus();
-            return;
-        }
+            var mensajeExito = GuardarCliente(clienteDto);
+            MessageBox.Show(mensajeExito, "Clientes suscriptos",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        var existeEmail = _clientes.Any(c => !ReferenceEquals(c, _clienteSeleccionado) &&
-                                             string.Equals(c.Email, clienteForm.Email, StringComparison.OrdinalIgnoreCase));
-        if (existeEmail)
+            LimpiarFormulario();
+            grpFormulario.Text = "Detalle de cliente";
+            _esEdicion = false;
+            _clienteSeleccionado = null;
+            btnEditar.Enabled = false;
+
+            CargarClientesDesdeBase(clienteDto.Dni);
+        }
+        catch (InvalidOperationException ex)
         {
-            MessageBox.Show("Ya existe un cliente registrado con el mismo correo electrónico.", "Validación",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            txtEmail.Focus();
-            return;
+            MessageBox.Show(ex.Message, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"No fue posible guardar los datos del cliente. Detalle: {ex.Message}", "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
 
+    private string GuardarCliente(ClienteDto clienteDto)
+    {
         if (_esEdicion && _clienteSeleccionado is not null)
         {
-            // Actualiza el registro existente y refresca la grilla.
-            _clienteSeleccionado.Dni = clienteForm.Dni;
-            _clienteSeleccionado.Nombre = clienteForm.Nombre;
-            _clienteSeleccionado.Apellido = clienteForm.Apellido;
-            _clienteSeleccionado.Direccion = clienteForm.Direccion;
-            _clienteSeleccionado.Email = clienteForm.Email;
-            _clienteSeleccionado.Estado = clienteForm.Estado;
-            dgvClientes.Refresh();
+            var dniOriginal = _clienteSeleccionado.Dni;
+
+            if (!string.Equals(clienteDto.Dni, dniOriginal, StringComparison.OrdinalIgnoreCase) &&
+                _clienteRepository.ExisteClientePorDni(clienteDto.Dni))
+            {
+                throw new InvalidOperationException("Ya existe un cliente con el DNI ingresado.");
+            }
+
+            if (_clienteRepository.ExisteClientePorEmail(clienteDto.Email, dniOriginal))
+            {
+                throw new InvalidOperationException("Ya existe un cliente con el correo electrónico ingresado.");
+            }
+
+            _clienteRepository.ActualizarCliente(clienteDto, dniOriginal);
+            return "Los datos del cliente se actualizaron correctamente.";
         }
-        else
+
+        if (_clienteRepository.ExisteClientePorDni(clienteDto.Dni))
         {
-            // Simula la persistencia añadiendo el cliente a la lista en memoria.
-            _clientes.Add(clienteForm);
+            throw new InvalidOperationException("Ya existe un cliente con el DNI ingresado.");
         }
 
-        MessageBox.Show("Los datos del cliente se almacenaron temporalmente. Integre con la base de datos en futuras versiones.",
-            "Clientes suscriptos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        if (_clienteRepository.ExisteClientePorEmail(clienteDto.Email, null))
+        {
+            throw new InvalidOperationException("Ya existe un cliente con el correo electrónico ingresado.");
+        }
 
-        LimpiarFormulario();
-        grpFormulario.Text = "Detalle de cliente";
-        _esEdicion = false;
-        _clienteSeleccionado = null;
-        btnEditar.Enabled = false;
+        _clienteRepository.CrearCliente(clienteDto);
+        return "El cliente se registró correctamente.";
     }
 
     private void BtnCancelar_Click(object? sender, EventArgs e)
@@ -154,10 +174,15 @@ public partial class FrmClientesSuscriptos : Form
         grpFormulario.Text = "Detalle de cliente";
         _esEdicion = false;
         _clienteSeleccionado = null;
-        btnEditar.Enabled = dgvClientes.CurrentRow is not null;
+        EstablecerClienteSeleccionadoDesdeFilaActual();
     }
 
     private void DgvClientes_SelectionChanged(object? sender, EventArgs e)
+    {
+        EstablecerClienteSeleccionadoDesdeFilaActual();
+    }
+
+    private void EstablecerClienteSeleccionadoDesdeFilaActual()
     {
         if (dgvClientes.CurrentRow?.DataBoundItem is ClienteViewModel cliente)
         {
@@ -171,67 +196,66 @@ public partial class FrmClientesSuscriptos : Form
         }
     }
 
-    private void CargarClientesDemo()
+    private bool CargarClientesDesdeBase(string? dniSeleccionado = null)
     {
-        var datosDemo = ObtenerClientesDemo().ToList();
-
-        _clientes.Clear();
-        foreach (var cliente in datosDemo)
+        try
         {
-            _clientes.Add(cliente);
+            var clientes = _clienteRepository.ObtenerClientes();
+
+            _clientes.Clear();
+            foreach (var cliente in clientes)
+            {
+                _clientes.Add(new ClienteViewModel
+                {
+                    Dni = cliente.Dni,
+                    Nombre = cliente.Nombre,
+                    Apellido = cliente.Apellido,
+                    Direccion = cliente.Direccion,
+                    Email = cliente.Email,
+                    Activo = cliente.Activo,
+                    FechaRegistro = cliente.FechaRegistro
+                });
+            }
+
+            bindingSourceClientes.ResetBindings(false);
+            SeleccionarClienteEnGrilla(dniSeleccionado);
+            EstablecerClienteSeleccionadoDesdeFilaActual();
+            return true;
         }
-
-        bindingSourceClientes.ResetBindings(false);
-        if (dgvClientes.Rows.Count > 0)
+        catch (Exception ex)
         {
-            dgvClientes.ClearSelection();
-            dgvClientes.Rows[0].Selected = true;
-        }
-        btnEditar.Enabled = dgvClientes.CurrentRow is not null;
-        _clienteSeleccionado = dgvClientes.CurrentRow?.DataBoundItem as ClienteViewModel;
-    }
-
-    private static IEnumerable<ClienteViewModel> ObtenerClientesDemo()
-    {
-        // Datos ficticios utilizados para ilustrar la funcionalidad.
-        yield return new ClienteViewModel
-        {
-            Dni = "30111222",
-            Nombre = "Carla",
-            Apellido = "Gómez",
-            Direccion = "Av. Siempre Viva 123",
-            Email = "carla.gomez@example.com",
-            Estado = "Activo"
-        };
-        yield return new ClienteViewModel
-        {
-            Dni = "28333444",
-            Nombre = "Martín",
-            Apellido = "Pereyra",
-            Direccion = "Belgrano 456",
-            Email = "martin.pereyra@example.com",
-            Estado = "Activo"
-        };
-        yield return new ClienteViewModel
-        {
-            Dni = "31222333",
-            Nombre = "Lucía",
-            Apellido = "Alonso",
-            Direccion = "Mitre 890",
-            Email = "lucia.alonso@example.com",
-            Estado = "Inactivo"
-        };
-    }
-
-    private static bool ValidarEmail(string email)
-    {
-        if (string.IsNullOrWhiteSpace(email))
-        {
+            MessageBox.Show($"No fue posible obtener los clientes registrados. Detalle: {ex.Message}", "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
+    }
 
-        const string patron = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        return Regex.IsMatch(email, patron, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+    private void SeleccionarClienteEnGrilla(string? dniSeleccionado)
+    {
+        if (dgvClientes.Rows.Count == 0)
+        {
+            return;
+        }
+
+        dgvClientes.ClearSelection();
+        DataGridViewRow? filaSeleccionada = null;
+
+        if (!string.IsNullOrWhiteSpace(dniSeleccionado))
+        {
+            foreach (DataGridViewRow row in dgvClientes.Rows)
+            {
+                if (row.DataBoundItem is ClienteViewModel cliente &&
+                    string.Equals(cliente.Dni, dniSeleccionado, StringComparison.OrdinalIgnoreCase))
+                {
+                    filaSeleccionada = row;
+                    break;
+                }
+            }
+        }
+
+        filaSeleccionada ??= dgvClientes.Rows[0];
+        filaSeleccionada.Selected = true;
+        dgvClientes.CurrentCell = filaSeleccionada.Cells[0];
     }
 
     private bool ValidarFormulario(out string mensaje)
@@ -273,14 +297,14 @@ public partial class FrmClientesSuscriptos : Form
         }
 
         var email = txtEmail.Text.Trim();
-        if (!ValidarEmail(email))
+        if (!EmailRegex.IsMatch(email))
         {
             mensaje = "Debe ingresar un correo electrónico válido.";
             txtEmail.Focus();
             return false;
         }
 
-        if (cboEstado.SelectedItem is not string || string.IsNullOrWhiteSpace(cboEstado.SelectedItem.ToString()))
+        if (cboEstado.SelectedItem is not string estado || string.IsNullOrWhiteSpace(estado))
         {
             mensaje = "Debe seleccionar un estado.";
             cboEstado.Focus();
@@ -305,9 +329,6 @@ public partial class FrmClientesSuscriptos : Form
         }
     }
 
-    /// <summary>
-    ///     Modelo simple usado para poblar el grid de clientes.
-    /// </summary>
     private sealed class ClienteViewModel
     {
         public string Dni { get; set; } = string.Empty;
@@ -315,6 +336,8 @@ public partial class FrmClientesSuscriptos : Form
         public string Apellido { get; set; } = string.Empty;
         public string Direccion { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Estado { get; set; } = string.Empty;
+        public bool Activo { get; set; }
+        public DateTime FechaRegistro { get; set; }
+        public string Estado => Activo ? "Activo" : "Inactivo";
     }
 }
