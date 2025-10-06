@@ -15,8 +15,6 @@ internal sealed class FrmSeleccionarProducto : Form
     private readonly ComboBox _cmbProductos;
     private readonly Label _lblPrecio;
     private readonly NumericUpDown _nudCantidad;
-    private readonly IReadOnlyList<ProductoVentaDisponible> _productos;
-
     public FrmSeleccionarProducto(IEnumerable<ProductoVentaDisponible> productosDisponibles)
     {
         if (productosDisponibles is null)
@@ -24,8 +22,8 @@ internal sealed class FrmSeleccionarProducto : Form
             throw new ArgumentNullException(nameof(productosDisponibles));
         }
 
-        _productos = productosDisponibles.ToList();
-        if (_productos.Count == 0)
+        var productos = productosDisponibles.ToList();
+        if (productos.Count == 0)
         {
             throw new ArgumentException("Debe haber al menos un producto disponible.", nameof(productosDisponibles));
         }
@@ -140,7 +138,7 @@ internal sealed class FrmSeleccionarProducto : Form
         AcceptButton = btnAceptar;
         CancelButton = btnCancelar;
 
-        _cmbProductos.DataSource = _productos;
+        _cmbProductos.DataSource = productos;
         _cmbProductos.DisplayMember = nameof(ProductoVentaDisponible.Descripcion);
         _cmbProductos.SelectedIndex = 0;
         ActualizarProductoSeleccionado();
@@ -163,7 +161,7 @@ internal sealed class FrmSeleccionarProducto : Form
             return;
         }
 
-        var maximo = Math.Max(1, seleccionado.StockDisponible);
+        var maximo = Math.Max(1, (int)seleccionado.StockDisponible);
         _nudCantidad.Maximum = maximo;
         if (_nudCantidad.Value > maximo)
         {

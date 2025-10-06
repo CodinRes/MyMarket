@@ -317,7 +317,8 @@ public partial class FrmEmitirRecibo : Form
                     continue;
                 }
 
-                var nuevoStock = (short)Math.Max(0, producto.Stock - detalle.CantidadProducto);
+                var stockRestante = Math.Max(0, (int)producto.Stock - detalle.CantidadProducto);
+                var nuevoStock = (short)stockRestante;
                 if (nuevoStock != producto.Stock)
                 {
                     _productoRepository.ActualizarStock(producto.CodigoProducto, nuevoStock);
@@ -424,7 +425,8 @@ public partial class FrmEmitirRecibo : Form
             {
                 var existente = _detalleRecibo.FirstOrDefault(d => d.CodigoProducto == producto.CodigoProducto);
                 var reservado = existente?.Cantidad ?? 0;
-                var stockDisponible = (short)Math.Max(0, producto.Stock - reservado);
+                var stockDisponibleCalculado = Math.Max(0, (int)producto.Stock - reservado);
+                var stockDisponible = (short)stockDisponibleCalculado;
                 return new ProductoVentaDisponible(producto, stockDisponible);
             })
             .Where(p => p.StockDisponible > 0)
