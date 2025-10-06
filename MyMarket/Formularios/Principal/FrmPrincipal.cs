@@ -56,7 +56,7 @@ public partial class FrmPrincipal : Form
             InitializeComponent();
 
             // Configura los botones del menú lateral para que abran los formularios correspondientes.
-            btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo());
+            btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo(_connectionFactory, () => _empleadoAutenticado));
             btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
             btnClientesSuscriptos.Click += BtnClientesSuscriptos_Click;
             btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
