@@ -32,7 +32,9 @@ partial class FrmRecibosEmitidos
             this.dgv = new System.Windows.Forms.DataGridView();
             this.btnVerDetalle = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.FlowLayoutPanel();
+            this.bindingSourceFacturas = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceFacturas)).BeginInit();
             this.panelBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,12 +48,14 @@ partial class FrmRecibosEmitidos
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
+            this.dgv.RowHeadersVisible = false;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(768, 370);
             this.dgv.TabIndex = 0;
-            // 
+            //
             // btnVerDetalle
-            // 
+            //
+            this.btnVerDetalle.Enabled = false;
             this.btnVerDetalle.Location = new System.Drawing.Point(645, 3);
             this.btnVerDetalle.Name = "btnVerDetalle";
             this.btnVerDetalle.Size = new System.Drawing.Size(120, 28);
@@ -81,6 +85,7 @@ partial class FrmRecibosEmitidos
             this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "Recibos Emitidos";
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceFacturas)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -91,4 +96,5 @@ partial class FrmRecibosEmitidos
         private System.Windows.Forms.DataGridView dgv;
         private System.Windows.Forms.Button btnVerDetalle;
         private System.Windows.Forms.FlowLayoutPanel panelBottom;
+        private System.Windows.Forms.BindingSource bindingSourceFacturas;
     }
