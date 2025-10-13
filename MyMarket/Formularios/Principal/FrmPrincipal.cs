@@ -38,6 +38,7 @@ public partial class FrmPrincipal : Form
         private readonly SqlConnectionFactory _connectionFactory;
         private readonly EmpleadoRepository _empleadoRepository;
         private readonly ClienteRepository _clienteRepository;
+        private readonly FacturaRepository _facturaRepository;
         private readonly AlmacenEstadoAplicacion _almacenEstadoAplicacion;
         private EmpleadoDto? _empleadoAutenticado;
         private readonly ContextMenuStrip _menuSesion;
@@ -50,6 +51,7 @@ public partial class FrmPrincipal : Form
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _empleadoRepository = new EmpleadoRepository(_connectionFactory);
             _clienteRepository = new ClienteRepository(_connectionFactory);
+            _facturaRepository = new FacturaRepository(_connectionFactory);
             _almacenEstadoAplicacion = new AlmacenEstadoAplicacion();
             _menuSesion = new ContextMenuStrip();
 
@@ -57,7 +59,7 @@ public partial class FrmPrincipal : Form
 
             // Configura los botones del menú lateral para que abran los formularios correspondientes.
             btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo(_connectionFactory, () => _empleadoAutenticado));
-            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
+            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos(_facturaRepository));
             btnClientesSuscriptos.Click += BtnClientesSuscriptos_Click;
             btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
             btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());

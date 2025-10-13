@@ -39,9 +39,24 @@ public class FacturaDto
     public string? DniCliente { get; set; }
 
     /// <summary>
+    ///     Nombre completo del cliente asociado o una leyenda genérica.
+    /// </summary>
+    public string ClienteNombreCompleto { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Nombre completo del empleado que emitió la factura.
+    /// </summary>
+    public string EmpleadoNombreCompleto { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Referencia del pago asociado.
     /// </summary>
     public long IdentificacionPago { get; set; }
+
+    /// <summary>
+    ///     Descripción del método de pago utilizado.
+    /// </summary>
+    public string MetodoPagoDescripcion { get; set; } = string.Empty;
 
     /// <summary>
     ///     Estado actual de la factura.

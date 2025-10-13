@@ -19,4 +19,14 @@ public class FacturaDetalleDto
     ///     Cantidad facturada.
     /// </summary>
     public short CantidadProducto { get; set; }
+
+    /// <summary>
+    ///     Descripción del producto facturado.
+    /// </summary>
+    public string NombreProducto { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Precio unitario aplicado al momento de la venta.
+    /// </summary>
+    public decimal PrecioUnitario { get; set; }
 }
