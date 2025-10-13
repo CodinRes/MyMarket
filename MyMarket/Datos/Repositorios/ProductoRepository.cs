@@ -29,7 +29,7 @@ public class ProductoRepository
 
         using var connection = _connectionFactory.CreateOpenConnection();
         using var command = connection.CreateCommand();
-        command.CommandText = @"SELECT codigo_producto, nombre, descripcion, precio, stock, id_categoria, estado
+        command.CommandText = @"SELECT codigo_producto, nombre_producto, descripcion, precio_unitario, stock, id_categoria, estado
                                  FROM producto
                                  WHERE estado = @estado";
         command.Parameters.Add(new SqlParameter("@estado", SqlDbType.Bit) { Value = true });
@@ -61,7 +61,7 @@ public class ProductoRepository
 
         using var connection = _connectionFactory.CreateOpenConnection();
         using var command = connection.CreateCommand();
-        command.CommandText = @"SELECT DISTINCT p.codigo_producto, p.nombre, p.descripcion, p.precio, p.stock, p.id_categoria, p.estado
+        command.CommandText = @"SELECT DISTINCT p.codigo_producto, p.nombre_producto, p.descripcion, p.precio_unitario, p.stock, p.id_categoria, p.estado
                                  FROM producto p
                                  WHERE p.estado = @estado
                                    AND p.stock > 0
