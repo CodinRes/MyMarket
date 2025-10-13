@@ -30,40 +30,67 @@ partial class FrmControlStock
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(900, 520);
             this.Text = "Control de Stock";
-            this.Padding = new System.Windows.Forms.Padding(16);
+            this.Padding = new System.Windows.Forms.Padding(12);
+
+            this.panelTop = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Height = 48;
+            this.panelTop.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
+            this.panelTop.Padding = new System.Windows.Forms.Padding(0,6,0,0);
+
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.btnEditar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnRefrescar = new System.Windows.Forms.Button();
+
+            this.btnAgregar.Text = "Agregar";
+            this.btnEditar.Text = "Editar";
+            this.btnEliminar.Text = "Eliminar";
+            this.btnRefrescar.Text = "Refrescar";
+
+            this.btnAgregar.AutoSize = true;
+            this.btnEditar.AutoSize = true;
+            this.btnEliminar.AutoSize = true;
+            this.btnRefrescar.AutoSize = true;
+
+            this.panelTop.Controls.Add(this.btnAgregar);
+            this.panelTop.Controls.Add(this.btnEditar);
+            this.panelTop.Controls.Add(this.btnEliminar);
+            this.panelTop.Controls.Add(this.btnRefrescar);
 
             this.dgv = new System.Windows.Forms.DataGridView();
-            this.btnReponer = new System.Windows.Forms.Button();
-            this.btnDescontar = new System.Windows.Forms.Button();
-            this.panelBottom = new System.Windows.Forms.FlowLayoutPanel();
-
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.AllowUserToAddRows = false;
-            this.dgv.Columns.Add("Codigo", "Código");
-            this.dgv.Columns.Add("Producto", "Producto");
-            this.dgv.Columns.Add("Stock", "Stock");
+            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv.MultiSelect = false;
+            this.dgv.ReadOnly = true;
+            this.dgv.AllowUserToResizeRows = false;
+            this.dgv.RowHeadersVisible = false;
+            this.dgv.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv.RowTemplate.Height = 26;
+
+            // Columns
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Codigo", HeaderText = "Código", DataPropertyName = "CodigoProducto", ReadOnly = true });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Nombre", HeaderText = "Nombre", DataPropertyName = "Nombre", ReadOnly = true, Width = 220 });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Descripcion", HeaderText = "Descripción", DataPropertyName = "Descripcion", ReadOnly = true, Width = 250 });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Precio", HeaderText = "Precio", DataPropertyName = "Precio", ReadOnly = true, DefaultCellStyle = { Format = "C2" } });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Stock", HeaderText = "Stock", DataPropertyName = "Stock", ReadOnly = true });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "IdCategoria", HeaderText = "IdCategoria", DataPropertyName = "IdCategoria", ReadOnly = true });
+            this.dgv.Columns.Add(new System.Windows.Forms.DataGridViewCheckBoxColumn { Name = "Estado", HeaderText = "Activo", DataPropertyName = "Estado", ReadOnly = true });
+
+            // Layout
             this.Controls.Add(this.dgv);
-
-            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Height = 48;
-            this.panelBottom.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.btnReponer.Text = "Reponer +1";
-            this.btnReponer.Width = 110;
-            this.btnReponer.Height = 28;
-            this.btnDescontar.Text = "Descontar -1";
-            this.btnDescontar.Width = 110;
-            this.btnDescontar.Height = 28;
-            this.panelBottom.Controls.Add(this.btnReponer);
-            this.panelBottom.Controls.Add(this.btnDescontar);
-            this.Controls.Add(this.panelBottom);
-
+            this.Controls.Add(this.panelTop);
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView dgv;
-        private System.Windows.Forms.Button btnReponer, btnDescontar;
-        private System.Windows.Forms.FlowLayoutPanel panelBottom;
+        private System.Windows.Forms.FlowLayoutPanel panelTop;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnRefrescar;
     }

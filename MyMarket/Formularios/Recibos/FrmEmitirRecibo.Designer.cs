@@ -20,430 +20,431 @@ partial class FrmEmitirRecibo
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+    #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.grpDatosCliente = new System.Windows.Forms.GroupBox();
-            this.tableLayoutCliente = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCliente = new System.Windows.Forms.Label();
-            this.cmbCliente = new System.Windows.Forms.ComboBox();
-            this.lblMetodoPago = new System.Windows.Forms.Label();
-            this.cmbMetodoPago = new System.Windows.Forms.ComboBox();
-            this.lblObservaciones = new System.Windows.Forms.Label();
-            this.txtObservaciones = new System.Windows.Forms.TextBox();
-            this.grpDetalle = new System.Windows.Forms.GroupBox();
-            this.dgvDetalle = new System.Windows.Forms.DataGridView();
-            this.footerLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutTotales = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSubtotal = new System.Windows.Forms.Label();
-            this.txtSubtotal = new System.Windows.Forms.TextBox();
-            this.lblImpuestos = new System.Windows.Forms.Label();
-            this.txtImpuestos = new System.Windows.Forms.TextBox();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.txtTotal = new System.Windows.Forms.TextBox();
-            this.panelBotones = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnEmitirRecibo = new System.Windows.Forms.Button();
-            this.btnQuitarItem = new System.Windows.Forms.Button();
-            this.btnNuevoItem = new System.Windows.Forms.Button();
-            this.mainLayout.SuspendLayout();
-            this.grpDatosCliente.SuspendLayout();
-            this.tableLayoutCliente.SuspendLayout();
-            this.grpDetalle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).BeginInit();
-            this.footerLayout.SuspendLayout();
-            this.tableLayoutTotales.SuspendLayout();
-            this.panelBotones.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // mainLayout
-            // 
-            this.mainLayout.ColumnCount = 1;
-            this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainLayout.Controls.Add(this.grpDatosCliente, 0, 0);
-            this.mainLayout.Controls.Add(this.grpDetalle, 0, 1);
-            this.mainLayout.Controls.Add(this.footerLayout, 0, 2);
-            this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainLayout.Location = new System.Drawing.Point(16, 16);
-            this.mainLayout.Name = "mainLayout";
-            this.mainLayout.RowCount = 3;
-            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.mainLayout.Size = new System.Drawing.Size(928, 568);
-            this.mainLayout.TabIndex = 0;
-            // 
-            // grpDatosCliente
-            // 
-            this.grpDatosCliente.Controls.Add(this.tableLayoutCliente);
-            this.grpDatosCliente.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpDatosCliente.Location = new System.Drawing.Point(0, 0);
-            this.grpDatosCliente.Margin = new System.Windows.Forms.Padding(0, 0, 0, 16);
-            this.grpDatosCliente.Name = "grpDatosCliente";
-            this.grpDatosCliente.Padding = new System.Windows.Forms.Padding(12, 16, 12, 12);
-            this.grpDatosCliente.Size = new System.Drawing.Size(928, 150);
-            this.grpDatosCliente.TabIndex = 0;
-            this.grpDatosCliente.TabStop = false;
-            this.grpDatosCliente.Text = "Datos del cliente";
-            // 
-            // tableLayoutCliente
-            // 
-            this.tableLayoutCliente.ColumnCount = 4;
-            this.tableLayoutCliente.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutCliente.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutCliente.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutCliente.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            this.tableLayoutCliente.Controls.Add(this.lblCliente, 0, 0);
-            this.tableLayoutCliente.Controls.Add(this.cmbCliente, 1, 0);
-            this.tableLayoutCliente.Controls.Add(this.lblMetodoPago, 2, 0);
-            this.tableLayoutCliente.Controls.Add(this.cmbMetodoPago, 3, 0);
-            this.tableLayoutCliente.Controls.Add(this.lblObservaciones, 0, 1);
-            this.tableLayoutCliente.Controls.Add(this.txtObservaciones, 1, 1);
-            this.tableLayoutCliente.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutCliente.Location = new System.Drawing.Point(12, 32);
-            this.tableLayoutCliente.Name = "tableLayoutCliente";
-            this.tableLayoutCliente.RowCount = 2;
-            this.tableLayoutCliente.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutCliente.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutCliente.Size = new System.Drawing.Size(904, 106);
-            this.tableLayoutCliente.TabIndex = 0;
-            // 
-            // lblCliente
-            // 
-            this.lblCliente.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblCliente.AutoSize = true;
-            this.lblCliente.Location = new System.Drawing.Point(3, 7);
-            this.lblCliente.Name = "lblCliente";
-            this.lblCliente.Size = new System.Drawing.Size(46, 15);
-            this.lblCliente.TabIndex = 0;
-            this.lblCliente.Text = "Cliente";
-            // 
-            // cmbCliente
-            // 
-            this.cmbCliente.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbCliente.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCliente.FormattingEnabled = true;
-            this.cmbCliente.Location = new System.Drawing.Point(123, 3);
-            this.cmbCliente.Margin = new System.Windows.Forms.Padding(3, 3, 12, 3);
-            this.cmbCliente.Name = "cmbCliente";
-            this.cmbCliente.Size = new System.Drawing.Size(256, 23);
-            this.cmbCliente.TabIndex = 1;
-            // 
-            // lblMetodoPago
-            // 
-            this.lblMetodoPago.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblMetodoPago.AutoSize = true;
-            this.lblMetodoPago.Location = new System.Drawing.Point(395, 7);
-            this.lblMetodoPago.Name = "lblMetodoPago";
-            this.lblMetodoPago.Size = new System.Drawing.Size(99, 15);
-            this.lblMetodoPago.TabIndex = 2;
-            this.lblMetodoPago.Text = "Método de pago";
-            // 
-            // cmbMetodoPago
-            // 
-            this.cmbMetodoPago.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbMetodoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMetodoPago.FormattingEnabled = true;
-            this.cmbMetodoPago.Location = new System.Drawing.Point(535, 3);
-            this.cmbMetodoPago.Margin = new System.Windows.Forms.Padding(3, 3, 12, 3);
-            this.cmbMetodoPago.Name = "cmbMetodoPago";
-            this.cmbMetodoPago.Size = new System.Drawing.Size(357, 23);
-            this.cmbMetodoPago.TabIndex = 3;
-            // 
-            // lblObservaciones
-            // 
-            this.lblObservaciones.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblObservaciones.AutoSize = true;
-            this.lblObservaciones.Location = new System.Drawing.Point(3, 71);
-            this.lblObservaciones.Name = "lblObservaciones";
-            this.lblObservaciones.Size = new System.Drawing.Size(86, 15);
-            this.lblObservaciones.TabIndex = 4;
-            this.lblObservaciones.Text = "Observaciones";
-            // 
-            // txtObservaciones
-            // 
-            this.tableLayoutCliente.SetColumnSpan(this.txtObservaciones, 3);
-            this.txtObservaciones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtObservaciones.Location = new System.Drawing.Point(123, 29);
-            this.txtObservaciones.Margin = new System.Windows.Forms.Padding(3, 6, 12, 3);
-            this.txtObservaciones.Multiline = true;
-            this.txtObservaciones.Name = "txtObservaciones";
-            this.txtObservaciones.PlaceholderText = "Notas internas u observaciones para el recibo";
-            this.txtObservaciones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtObservaciones.Size = new System.Drawing.Size(769, 74);
-            this.txtObservaciones.TabIndex = 5;
-            // 
-            // grpDetalle
-            // 
-            this.grpDetalle.Controls.Add(this.dgvDetalle);
-            this.grpDetalle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpDetalle.Location = new System.Drawing.Point(0, 166);
-            this.grpDetalle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 16);
-            this.grpDetalle.Name = "grpDetalle";
-            this.grpDetalle.Padding = new System.Windows.Forms.Padding(12, 16, 12, 12);
-            this.grpDetalle.Size = new System.Drawing.Size(928, 386);
-            this.grpDetalle.TabIndex = 1;
-            this.grpDetalle.TabStop = false;
-            this.grpDetalle.Text = "Detalle de productos y servicios";
-            // 
-            // dgvDetalle
-            // 
-            this.dgvDetalle.AllowUserToAddRows = false;
-            this.dgvDetalle.AllowUserToDeleteRows = false;
-            this.dgvDetalle.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
-            this.dgvDetalle.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvDetalle.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDetalle.BackgroundColor = System.Drawing.Color.White;
-            this.dgvDetalle.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvDetalle.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvDetalle.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(55, 130, 200);
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(45, 50, 55);
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetalle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvDetalle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(45, 45, 45);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(230, 240, 250);
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetalle.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvDetalle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDetalle.EnableHeadersVisualStyles = false;
-            this.dgvDetalle.GridColor = System.Drawing.Color.FromArgb(230, 230, 230);
-            this.dgvDetalle.Location = new System.Drawing.Point(12, 32);
-            this.dgvDetalle.MultiSelect = false;
-            this.dgvDetalle.Name = "dgvDetalle";
-            this.dgvDetalle.ReadOnly = true;
-            this.dgvDetalle.RowHeadersVisible = false;
-            this.dgvDetalle.RowTemplate.Height = 28;
-            this.dgvDetalle.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetalle.Size = new System.Drawing.Size(904, 342);
-            this.dgvDetalle.TabIndex = 0;
-            // 
-            // footerLayout
-            // 
-            this.footerLayout.AutoSize = true;
-            this.footerLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.footerLayout.ColumnCount = 2;
-            this.footerLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.footerLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.footerLayout.Controls.Add(this.tableLayoutTotales, 0, 0);
-            this.footerLayout.Controls.Add(this.panelBotones, 1, 0);
-            this.footerLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.footerLayout.Location = new System.Drawing.Point(0, 568);
-            this.footerLayout.Margin = new System.Windows.Forms.Padding(0);
-            this.footerLayout.Name = "footerLayout";
-            this.footerLayout.RowCount = 1;
-            this.footerLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.footerLayout.Padding = new System.Windows.Forms.Padding(0, 12, 0, 0);
-            this.footerLayout.Size = new System.Drawing.Size(928, 0);
-            this.footerLayout.TabIndex = 2;
-            // 
-            // tableLayoutTotales
-            // 
-            this.tableLayoutTotales.AutoSize = true;
-            this.tableLayoutTotales.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutTotales.ColumnCount = 2;
-            this.tableLayoutTotales.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutTotales.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutTotales.Controls.Add(this.lblSubtotal, 0, 0);
-            this.tableLayoutTotales.Controls.Add(this.txtSubtotal, 1, 0);
-            this.tableLayoutTotales.Controls.Add(this.lblImpuestos, 0, 1);
-            this.tableLayoutTotales.Controls.Add(this.txtImpuestos, 1, 1);
-            this.tableLayoutTotales.Controls.Add(this.lblTotal, 0, 2);
-            this.tableLayoutTotales.Controls.Add(this.txtTotal, 1, 2);
-            this.tableLayoutTotales.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutTotales.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutTotales.Margin = new System.Windows.Forms.Padding(0, 0, 24, 0);
-            this.tableLayoutTotales.Name = "tableLayoutTotales";
-            this.tableLayoutTotales.RowCount = 3;
-            this.tableLayoutTotales.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutTotales.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutTotales.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutTotales.Size = new System.Drawing.Size(556, 1);
-            this.tableLayoutTotales.TabIndex = 0;
-            // 
-            // lblSubtotal
-            // 
-            this.lblSubtotal.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblSubtotal.AutoSize = true;
-            this.lblSubtotal.Location = new System.Drawing.Point(3, 0);
-            this.lblSubtotal.Margin = new System.Windows.Forms.Padding(3, 0, 12, 8);
-            this.lblSubtotal.Name = "lblSubtotal";
-            this.lblSubtotal.Size = new System.Drawing.Size(55, 15);
-            this.lblSubtotal.TabIndex = 0;
-            this.lblSubtotal.Text = "Subtotal";
-            // 
-            // txtSubtotal
-            // 
-            this.txtSubtotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSubtotal.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
-            this.txtSubtotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSubtotal.Location = new System.Drawing.Point(73, 0);
-            this.txtSubtotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 8);
-            this.txtSubtotal.Name = "txtSubtotal";
-            this.txtSubtotal.PlaceholderText = "$ 0,00";
-            this.txtSubtotal.ReadOnly = true;
-            this.txtSubtotal.Size = new System.Drawing.Size(483, 23);
-            this.txtSubtotal.TabIndex = 1;
-            this.txtSubtotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // lblImpuestos
-            // 
-            this.lblImpuestos.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblImpuestos.AutoSize = true;
-            this.lblImpuestos.Location = new System.Drawing.Point(3, 23);
-            this.lblImpuestos.Margin = new System.Windows.Forms.Padding(3, 0, 12, 8);
-            this.lblImpuestos.Name = "lblImpuestos";
-            this.lblImpuestos.Size = new System.Drawing.Size(64, 15);
-            this.lblImpuestos.TabIndex = 2;
-            this.lblImpuestos.Text = "Impuestos";
-            // 
-            // txtImpuestos
-            // 
-            this.txtImpuestos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtImpuestos.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
-            this.txtImpuestos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtImpuestos.Location = new System.Drawing.Point(73, 23);
-            this.txtImpuestos.Margin = new System.Windows.Forms.Padding(3, 0, 0, 8);
-            this.txtImpuestos.Name = "txtImpuestos";
-            this.txtImpuestos.PlaceholderText = "$ 0,00";
-            this.txtImpuestos.ReadOnly = true;
-            this.txtImpuestos.Size = new System.Drawing.Size(483, 23);
-            this.txtImpuestos.TabIndex = 3;
-            this.txtImpuestos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTotal.Location = new System.Drawing.Point(3, 46);
-            this.lblTotal.Margin = new System.Windows.Forms.Padding(3, 0, 12, 0);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(36, 17);
-            this.lblTotal.TabIndex = 4;
-            this.lblTotal.Text = "Total";
-            // 
-            // txtTotal
-            // 
-            this.txtTotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTotal.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
-            this.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.txtTotal.Location = new System.Drawing.Point(73, 46);
-            this.txtTotal.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.txtTotal.Name = "txtTotal";
-            this.txtTotal.PlaceholderText = "$ 0,00";
-            this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(483, 25);
-            this.txtTotal.TabIndex = 5;
-            this.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // panelBotones
-            // 
-            this.panelBotones.AutoSize = true;
-            this.panelBotones.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelBotones.Controls.Add(this.btnEmitirRecibo);
-            this.panelBotones.Controls.Add(this.btnQuitarItem);
-            this.panelBotones.Controls.Add(this.btnNuevoItem);
-            this.panelBotones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBotones.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.panelBotones.Location = new System.Drawing.Point(580, 0);
-            this.panelBotones.Margin = new System.Windows.Forms.Padding(0);
-            this.panelBotones.Name = "panelBotones";
-            this.panelBotones.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.panelBotones.Size = new System.Drawing.Size(348, 1);
-            this.panelBotones.TabIndex = 1;
-            this.panelBotones.WrapContents = false;
-            // 
-            // btnEmitirRecibo
-            // 
-            this.btnEmitirRecibo.BackColor = System.Drawing.Color.FromArgb(45, 50, 55);
-            this.btnEmitirRecibo.FlatAppearance.BorderSize = 0;
-            this.btnEmitirRecibo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEmitirRecibo.ForeColor = System.Drawing.Color.White;
-            this.btnEmitirRecibo.Location = new System.Drawing.Point(228, 8);
-            this.btnEmitirRecibo.Margin = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.btnEmitirRecibo.Name = "btnEmitirRecibo";
-            this.btnEmitirRecibo.Size = new System.Drawing.Size(120, 36);
-            this.btnEmitirRecibo.TabIndex = 2;
-            this.btnEmitirRecibo.Text = "Emitir recibo";
-            this.btnEmitirRecibo.UseVisualStyleBackColor = false;
-            // 
-            // btnQuitarItem
-            // 
-            this.btnQuitarItem.BackColor = System.Drawing.Color.FromArgb(100, 110, 120);
-            this.btnQuitarItem.FlatAppearance.BorderSize = 0;
-            this.btnQuitarItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQuitarItem.ForeColor = System.Drawing.Color.White;
-            this.btnQuitarItem.Location = new System.Drawing.Point(102, 8);
-            this.btnQuitarItem.Margin = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.btnQuitarItem.Name = "btnQuitarItem";
-            this.btnQuitarItem.Size = new System.Drawing.Size(120, 36);
-            this.btnQuitarItem.TabIndex = 1;
-            this.btnQuitarItem.Text = "Quitar ítem";
-            this.btnQuitarItem.UseVisualStyleBackColor = false;
-            // 
-            // btnNuevoItem
-            // 
-            this.btnNuevoItem.BackColor = System.Drawing.Color.FromArgb(55, 130, 200);
-            this.btnNuevoItem.FlatAppearance.BorderSize = 0;
-            this.btnNuevoItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNuevoItem.ForeColor = System.Drawing.Color.White;
-            this.btnNuevoItem.Location = new System.Drawing.Point(0, 8);
-            this.btnNuevoItem.Margin = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.btnNuevoItem.Name = "btnNuevoItem";
-            this.btnNuevoItem.Size = new System.Drawing.Size(120, 36);
-            this.btnNuevoItem.TabIndex = 0;
-            this.btnNuevoItem.Text = "Nuevo ítem";
-            this.btnNuevoItem.UseVisualStyleBackColor = false;
-            // 
-            // FrmEmitirRecibo
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(960, 600);
-            this.Controls.Add(this.mainLayout);
-            this.Name = "FrmEmitirRecibo";
-            this.Padding = new System.Windows.Forms.Padding(16);
-            this.Text = "Emitir recibo";
-            this.mainLayout.ResumeLayout(false);
-            this.grpDatosCliente.ResumeLayout(false);
-            this.tableLayoutCliente.ResumeLayout(false);
-            this.tableLayoutCliente.PerformLayout();
-            this.grpDetalle.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
-            this.footerLayout.ResumeLayout(false);
-            this.tableLayoutTotales.ResumeLayout(false);
-            this.tableLayoutTotales.PerformLayout();
-            this.panelBotones.ResumeLayout(false);
-            this.ResumeLayout(false);
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent()
+    {
+        DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+        DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+        mainLayout = new TableLayoutPanel();
+        grpDatosCliente = new GroupBox();
+        tableLayoutCliente = new TableLayoutPanel();
+        lblCliente = new Label();
+        cmbCliente = new ComboBox();
+        lblMetodoPago = new Label();
+        cmbMetodoPago = new ComboBox();
+        lblObservaciones = new Label();
+        txtObservaciones = new TextBox();
+        grpDetalle = new GroupBox();
+        dgvDetalle = new DataGridView();
+        footerLayout = new TableLayoutPanel();
+        tableLayoutTotales = new TableLayoutPanel();
+        lblSubtotal = new Label();
+        txtSubtotal = new TextBox();
+        lblImpuestos = new Label();
+        txtImpuestos = new TextBox();
+        lblTotal = new Label();
+        txtTotal = new TextBox();
+        panelBotones = new FlowLayoutPanel();
+        btnEmitirRecibo = new Button();
+        btnQuitarItem = new Button();
+        btnNuevoItem = new Button();
+        mainLayout.SuspendLayout();
+        grpDatosCliente.SuspendLayout();
+        tableLayoutCliente.SuspendLayout();
+        grpDetalle.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvDetalle).BeginInit();
+        footerLayout.SuspendLayout();
+        tableLayoutTotales.SuspendLayout();
+        panelBotones.SuspendLayout();
+        SuspendLayout();
+        // 
+        // mainLayout
+        // 
+        mainLayout.ColumnCount = 1;
+        mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        mainLayout.Controls.Add(grpDatosCliente, 0, 0);
+        mainLayout.Controls.Add(grpDetalle, 0, 1);
+        mainLayout.Controls.Add(footerLayout, 0, 2);
+        mainLayout.Dock = DockStyle.Fill;
+        mainLayout.Location = new Point(16, 16);
+        mainLayout.Name = "mainLayout";
+        mainLayout.RowCount = 3;
+        mainLayout.RowStyles.Add(new RowStyle());
+        mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        mainLayout.RowStyles.Add(new RowStyle());
+        mainLayout.Size = new Size(928, 568);
+        mainLayout.TabIndex = 0;
+        // 
+        // grpDatosCliente
+        // 
+        grpDatosCliente.Controls.Add(tableLayoutCliente);
+        grpDatosCliente.Dock = DockStyle.Fill;
+        grpDatosCliente.Location = new Point(0, 0);
+        grpDatosCliente.Margin = new Padding(0, 0, 0, 16);
+        grpDatosCliente.Name = "grpDatosCliente";
+        grpDatosCliente.Padding = new Padding(12, 16, 12, 12);
+        grpDatosCliente.Size = new Size(928, 150);
+        grpDatosCliente.TabIndex = 0;
+        grpDatosCliente.TabStop = false;
+        grpDatosCliente.Text = "Datos del cliente";
+        // 
+        // tableLayoutCliente
+        // 
+        tableLayoutCliente.ColumnCount = 4;
+        tableLayoutCliente.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+        tableLayoutCliente.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+        tableLayoutCliente.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 140F));
+        tableLayoutCliente.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
+        tableLayoutCliente.Controls.Add(lblCliente, 0, 0);
+        tableLayoutCliente.Controls.Add(cmbCliente, 1, 0);
+        tableLayoutCliente.Controls.Add(lblMetodoPago, 2, 0);
+        tableLayoutCliente.Controls.Add(cmbMetodoPago, 3, 0);
+        tableLayoutCliente.Controls.Add(lblObservaciones, 0, 1);
+        tableLayoutCliente.Controls.Add(txtObservaciones, 1, 1);
+        tableLayoutCliente.Dock = DockStyle.Fill;
+        tableLayoutCliente.Location = new Point(12, 32);
+        tableLayoutCliente.Name = "tableLayoutCliente";
+        tableLayoutCliente.RowCount = 2;
+        tableLayoutCliente.RowStyles.Add(new RowStyle());
+        tableLayoutCliente.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+        tableLayoutCliente.Size = new Size(904, 106);
+        tableLayoutCliente.TabIndex = 0;
+        // 
+        // lblCliente
+        // 
+        lblCliente.Anchor = AnchorStyles.Left;
+        lblCliente.AutoSize = true;
+        lblCliente.Location = new Point(3, 7);
+        lblCliente.Name = "lblCliente";
+        lblCliente.Size = new Size(44, 15);
+        lblCliente.TabIndex = 0;
+        lblCliente.Text = "Cliente";
+        // 
+        // cmbCliente
+        // 
+        cmbCliente.Dock = DockStyle.Fill;
+        cmbCliente.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbCliente.FormattingEnabled = true;
+        cmbCliente.Location = new Point(123, 3);
+        cmbCliente.Margin = new Padding(3, 3, 12, 3);
+        cmbCliente.Name = "cmbCliente";
+        cmbCliente.Size = new Size(210, 23);
+        cmbCliente.TabIndex = 1;
+        // 
+        // lblMetodoPago
+        // 
+        lblMetodoPago.Anchor = AnchorStyles.Left;
+        lblMetodoPago.AutoSize = true;
+        lblMetodoPago.Location = new Point(348, 7);
+        lblMetodoPago.Name = "lblMetodoPago";
+        lblMetodoPago.Size = new Size(95, 15);
+        lblMetodoPago.TabIndex = 2;
+        lblMetodoPago.Text = "Método de pago";
+        // 
+        // cmbMetodoPago
+        // 
+        cmbMetodoPago.Dock = DockStyle.Fill;
+        cmbMetodoPago.DropDownStyle = ComboBoxStyle.DropDownList;
+        cmbMetodoPago.FormattingEnabled = true;
+        cmbMetodoPago.Location = new Point(488, 3);
+        cmbMetodoPago.Margin = new Padding(3, 3, 12, 3);
+        cmbMetodoPago.Name = "cmbMetodoPago";
+        cmbMetodoPago.Size = new Size(404, 23);
+        cmbMetodoPago.TabIndex = 3;
+        // 
+        // lblObservaciones
+        // 
+        lblObservaciones.Anchor = AnchorStyles.Left;
+        lblObservaciones.AutoSize = true;
+        lblObservaciones.Location = new Point(3, 61);
+        lblObservaciones.Name = "lblObservaciones";
+        lblObservaciones.Size = new Size(84, 15);
+        lblObservaciones.TabIndex = 4;
+        lblObservaciones.Text = "Observaciones";
+        // 
+        // txtObservaciones
+        // 
+        tableLayoutCliente.SetColumnSpan(txtObservaciones, 3);
+        txtObservaciones.Dock = DockStyle.Fill;
+        txtObservaciones.Location = new Point(123, 35);
+        txtObservaciones.Margin = new Padding(3, 6, 12, 3);
+        txtObservaciones.Multiline = true;
+        txtObservaciones.Name = "txtObservaciones";
+        txtObservaciones.PlaceholderText = "Notas internas u observaciones para el recibo";
+        txtObservaciones.ScrollBars = ScrollBars.Vertical;
+        txtObservaciones.Size = new Size(769, 71);
+        txtObservaciones.TabIndex = 5;
+        // 
+        // grpDetalle
+        // 
+        grpDetalle.Controls.Add(dgvDetalle);
+        grpDetalle.Dock = DockStyle.Fill;
+        grpDetalle.Location = new Point(0, 166);
+        grpDetalle.Margin = new Padding(0, 0, 0, 16);
+        grpDetalle.Name = "grpDetalle";
+        grpDetalle.Padding = new Padding(12, 16, 12, 12);
+        grpDetalle.Size = new Size(928, 287);
+        grpDetalle.TabIndex = 1;
+        grpDetalle.TabStop = false;
+        grpDetalle.Text = "Detalle de productos y servicios";
+        // 
+        // dgvDetalle
+        // 
+        dgvDetalle.AllowUserToAddRows = false;
+        dgvDetalle.AllowUserToDeleteRows = false;
+        dgvDetalle.AllowUserToResizeRows = false;
+        dataGridViewCellStyle7.BackColor = Color.FromArgb(245, 245, 245);
+        dgvDetalle.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+        dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvDetalle.BackgroundColor = Color.White;
+        dgvDetalle.BorderStyle = BorderStyle.None;
+        dgvDetalle.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+        dgvDetalle.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+        dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle8.BackColor = Color.FromArgb(55, 130, 200);
+        dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle8.ForeColor = Color.White;
+        dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(45, 50, 55);
+        dataGridViewCellStyle8.SelectionForeColor = Color.White;
+        dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+        dgvDetalle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+        dgvDetalle.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        dataGridViewCellStyle9.BackColor = Color.White;
+        dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F);
+        dataGridViewCellStyle9.ForeColor = Color.FromArgb(45, 45, 45);
+        dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(230, 240, 250);
+        dataGridViewCellStyle9.SelectionForeColor = Color.Black;
+        dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
+        dgvDetalle.DefaultCellStyle = dataGridViewCellStyle9;
+        dgvDetalle.Dock = DockStyle.Fill;
+        dgvDetalle.EnableHeadersVisualStyles = false;
+        dgvDetalle.GridColor = Color.FromArgb(230, 230, 230);
+        dgvDetalle.Location = new Point(12, 32);
+        dgvDetalle.MultiSelect = false;
+        dgvDetalle.Name = "dgvDetalle";
+        dgvDetalle.ReadOnly = true;
+        dgvDetalle.RowHeadersVisible = false;
+        dgvDetalle.RowTemplate.Height = 28;
+        dgvDetalle.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dgvDetalle.Size = new Size(904, 243);
+        dgvDetalle.TabIndex = 0;
+        // 
+        // footerLayout
+        // 
+        footerLayout.AutoSize = true;
+        footerLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        footerLayout.ColumnCount = 2;
+        footerLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+        footerLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+        footerLayout.Controls.Add(tableLayoutTotales, 0, 0);
+        footerLayout.Controls.Add(panelBotones, 1, 0);
+        footerLayout.Dock = DockStyle.Fill;
+        footerLayout.Location = new Point(0, 469);
+        footerLayout.Margin = new Padding(0);
+        footerLayout.Name = "footerLayout";
+        footerLayout.Padding = new Padding(0, 12, 0, 0);
+        footerLayout.RowCount = 1;
+        footerLayout.RowStyles.Add(new RowStyle());
+        footerLayout.Size = new Size(928, 99);
+        footerLayout.TabIndex = 2;
+        // 
+        // tableLayoutTotales
+        // 
+        tableLayoutTotales.AutoSize = true;
+        tableLayoutTotales.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        tableLayoutTotales.ColumnCount = 2;
+        tableLayoutTotales.ColumnStyles.Add(new ColumnStyle());
+        tableLayoutTotales.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        tableLayoutTotales.Controls.Add(lblSubtotal, 0, 0);
+        tableLayoutTotales.Controls.Add(txtSubtotal, 1, 0);
+        tableLayoutTotales.Controls.Add(lblImpuestos, 0, 1);
+        tableLayoutTotales.Controls.Add(txtImpuestos, 1, 1);
+        tableLayoutTotales.Controls.Add(lblTotal, 0, 2);
+        tableLayoutTotales.Controls.Add(txtTotal, 1, 2);
+        tableLayoutTotales.Dock = DockStyle.Fill;
+        tableLayoutTotales.Location = new Point(0, 12);
+        tableLayoutTotales.Margin = new Padding(0, 0, 24, 0);
+        tableLayoutTotales.Name = "tableLayoutTotales";
+        tableLayoutTotales.RowCount = 3;
+        tableLayoutTotales.RowStyles.Add(new RowStyle());
+        tableLayoutTotales.RowStyles.Add(new RowStyle());
+        tableLayoutTotales.RowStyles.Add(new RowStyle());
+        tableLayoutTotales.Size = new Size(532, 87);
+        tableLayoutTotales.TabIndex = 0;
+        // 
+        // lblSubtotal
+        // 
+        lblSubtotal.Anchor = AnchorStyles.Left;
+        lblSubtotal.AutoSize = true;
+        lblSubtotal.Location = new Point(3, 4);
+        lblSubtotal.Margin = new Padding(3, 0, 12, 8);
+        lblSubtotal.Name = "lblSubtotal";
+        lblSubtotal.Size = new Size(51, 15);
+        lblSubtotal.TabIndex = 0;
+        lblSubtotal.Text = "Subtotal";
+        // 
+        // txtSubtotal
+        // 
+        txtSubtotal.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        txtSubtotal.BackColor = Color.FromArgb(245, 245, 245);
+        txtSubtotal.BorderStyle = BorderStyle.FixedSingle;
+        txtSubtotal.Location = new Point(80, 0);
+        txtSubtotal.Margin = new Padding(3, 0, 0, 8);
+        txtSubtotal.Name = "txtSubtotal";
+        txtSubtotal.PlaceholderText = "$ 0,00";
+        txtSubtotal.ReadOnly = true;
+        txtSubtotal.Size = new Size(452, 23);
+        txtSubtotal.TabIndex = 1;
+        txtSubtotal.TextAlign = HorizontalAlignment.Right;
+        // 
+        // lblImpuestos
+        // 
+        lblImpuestos.Anchor = AnchorStyles.Left;
+        lblImpuestos.AutoSize = true;
+        lblImpuestos.Location = new Point(3, 35);
+        lblImpuestos.Margin = new Padding(3, 0, 12, 8);
+        lblImpuestos.Name = "lblImpuestos";
+        lblImpuestos.Size = new Size(62, 15);
+        lblImpuestos.TabIndex = 2;
+        lblImpuestos.Text = "Impuestos";
+        // 
+        // txtImpuestos
+        // 
+        txtImpuestos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        txtImpuestos.BackColor = Color.FromArgb(245, 245, 245);
+        txtImpuestos.BorderStyle = BorderStyle.FixedSingle;
+        txtImpuestos.Location = new Point(80, 31);
+        txtImpuestos.Margin = new Padding(3, 0, 0, 8);
+        txtImpuestos.Name = "txtImpuestos";
+        txtImpuestos.PlaceholderText = "$ 0,00";
+        txtImpuestos.ReadOnly = true;
+        txtImpuestos.Size = new Size(452, 23);
+        txtImpuestos.TabIndex = 3;
+        txtImpuestos.TextAlign = HorizontalAlignment.Right;
+        // 
+        // lblTotal
+        // 
+        lblTotal.Anchor = AnchorStyles.Left;
+        lblTotal.AutoSize = true;
+        lblTotal.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+        lblTotal.Location = new Point(3, 66);
+        lblTotal.Margin = new Padding(3, 0, 12, 0);
+        lblTotal.Name = "lblTotal";
+        lblTotal.Size = new Size(37, 17);
+        lblTotal.TabIndex = 4;
+        lblTotal.Text = "Total";
+        // 
+        // txtTotal
+        // 
+        txtTotal.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        txtTotal.BackColor = Color.FromArgb(245, 245, 245);
+        txtTotal.BorderStyle = BorderStyle.FixedSingle;
+        txtTotal.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+        txtTotal.Location = new Point(80, 62);
+        txtTotal.Margin = new Padding(3, 0, 0, 0);
+        txtTotal.Name = "txtTotal";
+        txtTotal.PlaceholderText = "$ 0,00";
+        txtTotal.ReadOnly = true;
+        txtTotal.Size = new Size(452, 25);
+        txtTotal.TabIndex = 5;
+        txtTotal.TextAlign = HorizontalAlignment.Right;
+        // 
+        // panelBotones
+        // 
+        panelBotones.AutoSize = true;
+        panelBotones.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        panelBotones.Controls.Add(btnEmitirRecibo);
+        panelBotones.Controls.Add(btnQuitarItem);
+        panelBotones.Controls.Add(btnNuevoItem);
+        panelBotones.Dock = DockStyle.Fill;
+        panelBotones.FlowDirection = FlowDirection.RightToLeft;
+        panelBotones.Location = new Point(556, 12);
+        panelBotones.Margin = new Padding(0);
+        panelBotones.Name = "panelBotones";
+        panelBotones.Padding = new Padding(0, 8, 0, 0);
+        panelBotones.Size = new Size(372, 87);
+        panelBotones.TabIndex = 1;
+        panelBotones.WrapContents = false;
+        panelBotones.Paint += panelBotones_Paint;
+        // 
+        // btnEmitirRecibo
+        // 
+        btnEmitirRecibo.BackColor = Color.FromArgb(45, 50, 55);
+        btnEmitirRecibo.FlatAppearance.BorderSize = 0;
+        btnEmitirRecibo.FlatStyle = FlatStyle.Flat;
+        btnEmitirRecibo.ForeColor = Color.White;
+        btnEmitirRecibo.Location = new Point(273, 8);
+        btnEmitirRecibo.Margin = new Padding(6, 0, 0, 0);
+        btnEmitirRecibo.Name = "btnEmitirRecibo";
+        btnEmitirRecibo.Size = new Size(99, 36);
+        btnEmitirRecibo.TabIndex = 2;
+        btnEmitirRecibo.Text = "Emitir recibo";
+        btnEmitirRecibo.UseVisualStyleBackColor = false;
+        // 
+        // btnQuitarItem
+        // 
+        btnQuitarItem.BackColor = Color.FromArgb(100, 110, 120);
+        btnQuitarItem.FlatAppearance.BorderSize = 0;
+        btnQuitarItem.FlatStyle = FlatStyle.Flat;
+        btnQuitarItem.ForeColor = Color.White;
+        btnQuitarItem.Location = new Point(172, 8);
+        btnQuitarItem.Margin = new Padding(6, 0, 0, 0);
+        btnQuitarItem.Name = "btnQuitarItem";
+        btnQuitarItem.Size = new Size(95, 36);
+        btnQuitarItem.TabIndex = 1;
+        btnQuitarItem.Text = "Quitar ítem";
+        btnQuitarItem.UseVisualStyleBackColor = false;
+        // 
+        // btnNuevoItem
+        // 
+        btnNuevoItem.BackColor = Color.FromArgb(55, 130, 200);
+        btnNuevoItem.FlatAppearance.BorderSize = 0;
+        btnNuevoItem.FlatStyle = FlatStyle.Flat;
+        btnNuevoItem.ForeColor = Color.White;
+        btnNuevoItem.Location = new Point(62, 8);
+        btnNuevoItem.Margin = new Padding(6, 0, 0, 0);
+        btnNuevoItem.Name = "btnNuevoItem";
+        btnNuevoItem.Size = new Size(104, 36);
+        btnNuevoItem.TabIndex = 0;
+        btnNuevoItem.Text = "Nuevo ítem";
+        btnNuevoItem.UseVisualStyleBackColor = false;
+        // 
+        // FrmEmitirRecibo
+        // 
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        BackColor = Color.White;
+        ClientSize = new Size(960, 600);
+        Controls.Add(mainLayout);
+        Name = "FrmEmitirRecibo";
+        Padding = new Padding(16);
+        Text = "Emitir recibo";
+        mainLayout.ResumeLayout(false);
+        mainLayout.PerformLayout();
+        grpDatosCliente.ResumeLayout(false);
+        tableLayoutCliente.ResumeLayout(false);
+        tableLayoutCliente.PerformLayout();
+        grpDetalle.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvDetalle).EndInit();
+        footerLayout.ResumeLayout(false);
+        footerLayout.PerformLayout();
+        tableLayoutTotales.ResumeLayout(false);
+        tableLayoutTotales.PerformLayout();
+        panelBotones.ResumeLayout(false);
+        ResumeLayout(false);
 
-        }
+    }
 
-        #endregion
+    #endregion
 
-        private System.Windows.Forms.TableLayoutPanel mainLayout;
+    private System.Windows.Forms.TableLayoutPanel mainLayout;
         private System.Windows.Forms.GroupBox grpDatosCliente;
         private System.Windows.Forms.TableLayoutPanel tableLayoutCliente;
         private System.Windows.Forms.Label lblCliente;

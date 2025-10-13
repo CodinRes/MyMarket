@@ -298,18 +298,20 @@ public partial class FrmGestionUsuarios : Form
             return;
         }
 
-        if (dgvUsuarios.CurrentRow?.DataBoundItem is not EmpleadoDto empleado)
+        if (dgvUsuarios.CurrentRow?.DataBoundItem is EmpleadoDto empleado)
+        {
+            var puedeGestionar = PuedeGestionarEmpleado(empleado);
+            btnEliminar.Text = empleado.Activo ? "Desactivar usuario" : "Activar usuario";
+            btnEliminar.Enabled = puedeGestionar;
+            btnEditar.Enabled = puedeGestionar;
+        }
+        else
         {
             btnEliminar.Enabled = false;
             btnEditar.Enabled = false;
             btnEliminar.Text = "Cambiar estado";
             return;
         }
-
-        var puedeGestionar = PuedeGestionarEmpleado(empleado);
-        btnEliminar.Text = empleado.Activo ? "Desactivar usuario" : "Activar usuario";
-        btnEliminar.Enabled = puedeGestionar;
-        btnEditar.Enabled = puedeGestionar;
     }
 
     /// <summary>

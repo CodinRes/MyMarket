@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -53,10 +54,45 @@ public partial class FrmEmitirRecibo : Form
         ConfigurarDataGridView();
         InicializarTotales();
 
+        // Nueva configuración visual y de interacción del botón emitir recibo
+        ConfigurarBotonEmitirRecibo();
+
         Load += FrmEmitirRecibo_Load;
         btnNuevoItem.Click += BtnNuevoItem_Click;
         btnQuitarItem.Click += BtnQuitarItem_Click;
         btnEmitirRecibo.Click += BtnEmitirRecibo_Click;
+    }
+
+    // Nuevo método: aplica estilo y pequeñas mejoras de usabilidad al botón
+    private void ConfigurarBotonEmitirRecibo()
+    {
+        if (btnEmitirRecibo == null)
+        {
+            return;
+        }
+
+        // Estilo: color distintivo (éxito), texto legible y borde plano
+        btnEmitirRecibo.BackColor = Color.FromArgb(40, 167, 69); // verde tipo "success"
+        btnEmitirRecibo.ForeColor = Color.White;
+        btnEmitirRecibo.FlatStyle = FlatStyle.Flat;
+        btnEmitirRecibo.FlatAppearance.BorderSize = 0;
+        btnEmitirRecibo.Cursor = Cursors.Hand;
+
+        // Tipografía ligeramente más destacada
+        btnEmitirRecibo.Font = new Font(btnEmitirRecibo.Font.FontFamily, 9.75F, FontStyle.Bold);
+
+        // Texto claro y con espacio
+        btnEmitirRecibo.Text = "Emitir recibo";
+        btnEmitirRecibo.Padding = new Padding(10, 6, 10, 6);
+        btnEmitirRecibo.AutoSize = true;
+        btnEmitirRecibo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+        // Accesibilidad: tooltip breve
+        var tt = new ToolTip();
+        tt.SetToolTip(btnEmitirRecibo, "Registrar la venta y emitir el recibo (Ctrl+Enter)");
+
+        // Opcional: atajo de teclado
+        btnEmitirRecibo.TabIndex = Math.Max(0, btnEmitirRecibo.TabIndex);
     }
 
     private void FrmEmitirRecibo_Load(object? sender, EventArgs e)
@@ -201,7 +237,10 @@ public partial class FrmEmitirRecibo : Form
     {
         try
         {
-            _productosDisponibles = _productoRepository.GetProductosDisponiblesParaVenta().ToList();
+            // Mostrar todos los productos activos que tengan stock > 0 (incluir productos sin lotes)
+            _productosDisponibles = _productoRepository.GetProductosActivos()
+                .Where(p => p.Stock > 0)
+                .ToList();
         }
         catch (SqlException ex)
         {
@@ -470,5 +509,10 @@ public partial class FrmEmitirRecibo : Form
         public bool EsPlaceholder { get; }
 
         public override string ToString() => Descripcion;
+    }
+
+    private void panelBotones_Paint(object sender, PaintEventArgs e)
+    {
+
     }
 }

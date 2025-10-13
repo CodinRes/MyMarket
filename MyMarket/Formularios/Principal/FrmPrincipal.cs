@@ -37,7 +37,7 @@ public partial class FrmPrincipal : Form
 
         private readonly SqlConnectionFactory _connectionFactory;
         private readonly EmpleadoRepository _empleadoRepository;
-        private readonly ClienteRepository _clienteRepository;
+        private readonly ClienteRepository _cliente_repository;
         private readonly AlmacenEstadoAplicacion _almacenEstadoAplicacion;
         private EmpleadoDto? _empleadoAutenticado;
         private readonly ContextMenuStrip _menuSesion;
@@ -49,17 +49,16 @@ public partial class FrmPrincipal : Form
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _empleadoRepository = new EmpleadoRepository(_connectionFactory);
-            _clienteRepository = new ClienteRepository(_connectionFactory);
+            _cliente_repository = new ClienteRepository(_connectionFactory);
             _almacenEstadoAplicacion = new AlmacenEstadoAplicacion();
             _menuSesion = new ContextMenuStrip();
 
             InitializeComponent();
 
-            // Configura los botones del menú lateral para que abran los formularios correspondientes.
             btnEmitirRecibo.Click += (s, e) => AbrirEnPanel(new FrmEmitirRecibo(_connectionFactory, () => _empleadoAutenticado));
-            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos());
+            btnRecibosEmitidos.Click += (s, e) => AbrirEnPanel(new FrmRecibosEmitidos(_connectionFactory, () => _empleadoAutenticado));
             btnClientesSuscriptos.Click += BtnClientesSuscriptos_Click;
-            btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock());
+            btnControlStock.Click += (s, e) => AbrirEnPanel(new FrmControlStock(_connectionFactory));
             btnAnalisisDatos.Click += (s, e) => AbrirEnPanel(new FrmAnalisisDatos());
             btnGestionUsuarios.Click += BtnGestionUsuarios_Click;
             btnSalir.Click += (s, e) => Close();
@@ -208,10 +207,14 @@ public partial class FrmPrincipal : Form
                 return;
             }
 
-            var puedeGestionarClientesSuscriptos = TienePermisoClientesSuscriptos(rolDescripcion);
             var rolNormalizado = rolDescripcion.Trim().ToLowerInvariant();
+            var esGerente = rolNormalizado.Contains("gerente");
+            var esAdmin = rolNormalizado.Contains("admin");
+            var esCajero = rolNormalizado.Contains("caj") || rolNormalizado.Contains("cajero");
+            var esVendedor = rolNormalizado.Contains("vend");
 
-            if (rolNormalizado.Contains("gerente"))
+            // Gerente: todos los permisos
+            if (esGerente)
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
@@ -219,18 +222,22 @@ public partial class FrmPrincipal : Form
                 btnAnalisisDatos.Enabled = true;
                 btnGestionUsuarios.Enabled = true;
             }
-            else if (rolNormalizado.Contains("admin") || rolNormalizado.Contains("gestor"))
+            // Admin: permisos amplios salvo gestión de usuarios completa
+            else if (esAdmin)
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
                 btnControlStock.Enabled = true;
             }
-            else if (rolNormalizado.Contains("vend"))
+            // Cajero o vendedor: pueden emitir recibos y ver sus recibos
+            else if (esCajero || esVendedor)
             {
                 btnEmitirRecibo.Enabled = true;
                 btnRecibosEmitidos.Enabled = true;
             }
 
+            // Clientes suscriptos
+            var puedeGestionarClientesSuscriptos = TienePermisoClientesSuscriptos(rolDescripcion);
             btnClientesSuscriptos.Enabled = puedeGestionarClientesSuscriptos;
         }
 
@@ -246,7 +253,7 @@ public partial class FrmPrincipal : Form
                 return;
             }
 
-            AbrirEnPanel(new FrmClientesSuscriptos(_clienteRepository));
+            AbrirEnPanel(new FrmClientesSuscriptos(_cliente_repository));
         }
 
         /// <summary>
