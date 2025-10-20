@@ -105,4 +105,83 @@ public class ProductoRepository
         var rows = command.ExecuteNonQuery();
         return rows > 0;
     }
+
+    /// <summary>
+    ///     Crea un nuevo producto en la base de datos.
+    /// </summary>
+    public bool CrearProducto(ProductoDto producto)
+    {
+        using var connection = _connectionFactory.CreateOpenConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = @"INSERT INTO producto (codigo_producto, nombre_producto, descripcion, precio_unitario, stock, id_categoria, estado)
+                                VALUES (@codigo, @nombre, @descripcion, @precio, @stock, @categoria, @estado)";
+        command.Parameters.Add(new SqlParameter("@codigo", SqlDbType.BigInt) { Value = producto.CodigoProducto });
+        command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.VarChar, 100) { Value = producto.Nombre });
+        command.Parameters.Add(new SqlParameter("@descripcion", SqlDbType.VarChar, 200) { Value = (object?)producto.Descripcion ?? DBNull.Value });
+        command.Parameters.Add(new SqlParameter("@precio", SqlDbType.Decimal) { Value = producto.Precio, Precision = 10, Scale = 2 });
+        command.Parameters.Add(new SqlParameter("@stock", SqlDbType.SmallInt) { Value = producto.Stock });
+        command.Parameters.Add(new SqlParameter("@categoria", SqlDbType.Int) { Value = producto.IdCategoria });
+        command.Parameters.Add(new SqlParameter("@estado", SqlDbType.Bit) { Value = producto.Estado });
+
+        var rows = command.ExecuteNonQuery();
+        return rows > 0;
+    }
+
+    /// <summary>
+    ///     Actualiza la información de un producto existente.
+    /// </summary>
+    public bool ActualizarProducto(ProductoDto producto)
+    {
+        using var connection = _connectionFactory.CreateOpenConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = @"UPDATE producto
+                                 SET nombre_producto = @nombre,
+                                     descripcion = @descripcion,
+                                     precio_unitario = @precio,
+                                     stock = @stock,
+                                     id_categoria = @categoria,
+                                     estado = @estado
+                                 WHERE codigo_producto = @codigo";
+        command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.VarChar, 100) { Value = producto.Nombre });
+        command.Parameters.Add(new SqlParameter("@descripcion", SqlDbType.VarChar, 200) { Value = (object?)producto.Descripcion ?? DBNull.Value });
+        command.Parameters.Add(new SqlParameter("@precio", SqlDbType.Decimal) { Value = producto.Precio, Precision = 10, Scale = 2 });
+        command.Parameters.Add(new SqlParameter("@stock", SqlDbType.SmallInt) { Value = producto.Stock });
+        command.Parameters.Add(new SqlParameter("@categoria", SqlDbType.Int) { Value = producto.IdCategoria });
+        command.Parameters.Add(new SqlParameter("@estado", SqlDbType.Bit) { Value = producto.Estado });
+        command.Parameters.Add(new SqlParameter("@codigo", SqlDbType.BigInt) { Value = producto.CodigoProducto });
+
+        var rows = command.ExecuteNonQuery();
+        return rows > 0;
+    }
+
+    /// <summary>
+    ///     Obtiene todos los productos (activos e inactivos) de la base de datos.
+    /// </summary>
+    public IReadOnlyList<ProductoDto> GetTodosProductos()
+    {
+        var productos = new List<ProductoDto>();
+
+        using var connection = _connectionFactory.CreateOpenConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = @"SELECT codigo_producto, nombre_producto, descripcion, precio_unitario, stock, id_categoria, estado
+                                 FROM producto
+                                 ORDER BY nombre_producto";
+
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            productos.Add(new ProductoDto
+            {
+                CodigoProducto = reader.GetInt64(0),
+                Nombre = reader.GetString(1),
+                Descripcion = reader.IsDBNull(2) ? null : reader.GetString(2),
+                Precio = reader.GetDecimal(3),
+                Stock = reader.GetInt16(4),
+                IdCategoria = reader.GetInt32(5),
+                Estado = !reader.IsDBNull(6) && reader.GetBoolean(6)
+            });
+        }
+
+        return productos;
+    }
 }
