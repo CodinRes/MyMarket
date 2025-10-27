@@ -326,11 +326,38 @@ public partial class FrmEmitirRecibo : Form
                 }
             }
 
-            MessageBox.Show(
-                $"Recibo emitido correctamente. Código: {codigoFactura}.\nTotal cobrado: {total.ToString("C2", CultureInfo.CurrentCulture)}",
-                "Recibo emitido",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            // En lugar de un mensaje simple, abrir el detalle de la factura recién emitida
+            try
+            {
+                var factura = _facturaRepository.ObtenerFacturaPorCodigo(codigoFactura);
+                if (factura is not null)
+                {
+                    using var detalleForm = new FrmDetalleFactura(factura);
+                    detalleForm.ShowDialog(this);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"Recibo emitido correctamente. Código: {codigoFactura}.\nTotal cobrado: {total.ToString("C2", CultureInfo.CurrentCulture)}",
+                        "Recibo emitido",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"El recibo se emitió pero no fue posible abrir el detalle. Detalle: {ex.Message}",
+                    "Recibo emitido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"El recibo se emitió pero ocurrió un error al abrir el detalle. Detalle: {ex.Message}",
+                    "Recibo emitido",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
 
             LimpiarFormulario();
             CargarProductosDisponibles();
